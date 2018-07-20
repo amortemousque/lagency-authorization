@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  host:
+    image: host
+    ports: 
+      - "5010:5010"
+    build:
+      context: .
+      dockerfile: src/Host/Dockerfile
+    environment:
+      - JWT_AUTHORITY=https://qupone-staging.eu.auth0.com
+      - JWT_AUDIENCE=http://lgroupe-services.louis21.com
+    networks:
+      - quarksupone
+
+networks:
+  quarksupone:
+    external:
+      name: quarksupone
