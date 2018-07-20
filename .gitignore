@@ -274,3 +274,4 @@ __pycache__/
 tools/**/*.exe
 tools/Cake/
 tools/packages.config.md5sum
+\.DS_Store
