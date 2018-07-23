@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  identityserverwithaspnetidentity:
+    image: identityserverwithaspnetidentity
+    build:
+      context: .
+      dockerfile: src/IdentityServerWithAspNetIdentity/Dockerfile
+    ports: 
+      - "5011:5011"
+    networks:
+      - quarksupone
+ 
+networks:
+  quarksupone:
+    external:
+      name: quarksupone
+
+
+
+
+
