@@ -23,12 +23,13 @@ namespace IdentityServerWithAspNetIdentity
                 //context.Database.Migrate();
 
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                var alice = userMgr.FindByNameAsync("alice").Result;
+                var alice = userMgr.FindByNameAsync("AliceSmith@email.com").Result;
                 if (alice == null)
                 {
                     alice = new ApplicationUser
                     {
-                        UserName = "alice"
+                        UserName = "AliceSmith@email.com",
+                        Email = "AliceSmith@email.com"
                     };
                     var result = userMgr.CreateAsync(alice, "Pass123$").Result;
                     if (!result.Succeeded)
@@ -56,12 +57,13 @@ namespace IdentityServerWithAspNetIdentity
                     Console.WriteLine("alice already exists");
                 }
 
-                var bob = userMgr.FindByNameAsync("bob").Result;
+                var bob = userMgr.FindByNameAsync("BobSmith@email.com").Result;
                 if (bob == null)
                 {
                     bob = new ApplicationUser
                     {
-                        UserName = "bob"
+                        UserName = "BobSmith@email.com",
+                        Email = "BobSmith@email.com"
                     };
                     var result = userMgr.CreateAsync(bob, "Pass123$").Result;
                     if (!result.Succeeded)

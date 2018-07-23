@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using IdentityServer4;
 using IdentityServerWithAspNetIdentity.Identity;
+using IdentityServerWithAspNetIdentity.Services;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -30,40 +31,19 @@ namespace IdentityServerWithAspNetIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
-
-
-
+            //Custom extension for mongo implementation
             services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser>>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
-            //services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
-         
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-            //    .AddRoleStore<RoleStore<ApplicationRole>>()
-            //    .AddUserStore<UserStore<ApplicationUser>>()
-            //    .AddUserManager<UserManager<ApplicationUser>>()
-            //    .AddRoleManager<RoleManager<ApplicationUser>>()
-            //    .AddSignInManager<SignInManager<ApplicationUser>>()
-            //    .AddDefaultTokenProviders();
 
-            //// Identity Services
-            //services.AddTransient<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
-            //services.AddTransient<IRoleStore<ApplicationRole>, RoleStore<ApplicationRole>>();
-            //IMongoCollection<TRole>
 
-            //string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
-            ////services.AddTransient<DapperUsersTable>();
 
-            //.AddEntityFrameworkStores<ApplicationDbContext>() 
-            //.AddDefaultTokenProviders();
+            // Add application services.
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.AddMvc();
-
-
 
             services.AddIdentityServer(options =>
             {
@@ -71,8 +51,8 @@ namespace IdentityServerWithAspNetIdentity
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
             })
-                    .AddConfigurationStore(Configuration.GetSection("ConnectionStrings"))
-                    .AddOperationalStore(Configuration.GetSection("ConnectionStrings"))
+            //Custom extension for mongo implementation       
+            .AddMongoDbConfigurationStore(Configuration.GetConnectionString("DefaultConnection"))
             .AddDeveloperSigningCredential()
             .AddExtensionGrantValidator<Extensions.ExtensionGrantValidator>()
             .AddExtensionGrantValidator<Extensions.NoSubjectExtensionGrantValidator>()
@@ -80,43 +60,8 @@ namespace IdentityServerWithAspNetIdentity
             .AddAppAuthRedirectUriValidator()
             .AddAspNetIdentity<ApplicationUser>();
 
-            //.AddTestUsers(TestUsers.Users);
-
             services.AddExternalIdentityProviders();
 
-
-            //services.Configure<IISOptions>(iis =>
-            //{
-            //    iis.AuthenticationDisplayName = "Windows";
-            //    iis.AutomaticAuthentication = false;
-            //});
-            //var builder = services.AddIdentityServer(options =>
-                //{
-                //    options.Events.RaiseErrorEvents = true;
-                //    options.Events.RaiseInformationEvents = true;
-                //    options.Events.RaiseFailureEvents = true;
-                //    options.Events.RaiseSuccessEvents = true;
-                //})
-                //.AddInMemoryIdentityResources(Config.GetIdentityResources())
-                //.AddInMemoryApiResources(Config.GetApiResources())
-                //.AddInMemoryClients(Config.GetClients())
-                //.AddAspNetIdentity<ApplicationUser>();
-
-            //if (Environment.IsDevelopment())
-            //{
-            //    builder.AddDeveloperSigningCredential();
-            //}
-            //else
-            //{
-            //    throw new Exception("need to configure key material");
-            //}
-
-            //services.AddAuthentication()
-              //.AddGoogle(options =>
-              //{
-              //    options.ClientId = "708996912208-9m4dkjb5hscn7cjrn5u0r4tbgkbj1fko.apps.googleusercontent.com";
-              //    options.ClientSecret = "wdfPY6t8H8cecgjlxud__4Gh";
-              //});
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

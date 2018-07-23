@@ -6,6 +6,7 @@ FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
 COPY Quickstart6_AspNetIdentity.sln ./
 COPY src/IdentityServerWithAspNetIdentity/IdentityServerWithAspNetIdentity.csproj src/IdentityServerWithAspNetIdentity/
+COPY src/IdentityServer4.MongoDB/IdentityServer4.MongoDB.csproj src/IdentityServer4.MongoDB/
 RUN dotnet restore -nowarn:msb3202,nu1503
 COPY . .
 WORKDIR /src/src/IdentityServerWithAspNetIdentity

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="IdentityServer4\" />
+    <Folder Include="IdentityServer4\Stores\" />
+    <Folder Include="IdentityServer4\Mappers\" />
+    <Folder Include="IdentityServer4\Services\" />
+    <Folder Include="IdentityServer4\Extensions\" />
+    <Folder Include="Identity\" />
+    <Folder Include="Identity\Stores\" />
+    <Folder Include="Identity\Extensions\" />
+    <Folder Include="Message\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
+    <PackageReference Include="IdentityServer4" Version="2.2.0" />
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LagencyUser.Application\LagencyUser.Application.csproj" />
+  </ItemGroup>
+</Project>
