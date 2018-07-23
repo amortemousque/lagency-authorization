@@ -15,15 +15,12 @@ namespace IdentityServer4.MongoDB.DbContexts
             if (settings.Value == null)
                 throw new ArgumentNullException(nameof(settings), "MongoDBConfiguration cannot be null.");
 
-            if (settings.Value.ConnectionString == null)
+            if (settings.Value.DefaultConnection == null)
                 throw new ArgumentNullException(nameof(settings), "MongoDBConfiguration.ConnectionString cannot be null.");
 
-            //if (settings.Value.Database == null)
-                //throw new ArgumentNullException(nameof(settings), "MongoDBConfiguration.Database cannot be null.");
+            var databaseName = MongoUrl.Create(settings.Value.DefaultConnection).DatabaseName;
 
-            var databaseName = MongoUrl.Create(settings.Value.ConnectionString).DatabaseName;
-
-            _client = new MongoClient(settings.Value.ConnectionString);
+            _client = new MongoClient(settings.Value.DefaultConnection);
             _database = _client.GetDatabase(databaseName);
         }
 

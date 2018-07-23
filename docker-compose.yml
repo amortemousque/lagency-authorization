@@ -1,19 +1,16 @@
 version: '3.4'
 
 services:
-  host:
-    image: host
-    ports: 
-      - "5010:5010"
+  identityserverwithaspnetidentity:
+    image: identityserverwithaspnetidentity
     build:
       context: .
-      dockerfile: src/Host/Dockerfile
-    environment:
-      - JWT_AUTHORITY=https://qupone-staging.eu.auth0.com
-      - JWT_AUDIENCE=http://lgroupe-services.louis21.com
+      dockerfile: src/IdentityServerWithAspNetIdentity/Dockerfile
+    ports: 
+      - "5011:5011"
     networks:
       - quarksupone
-
+ 
 networks:
   quarksupone:
     external:

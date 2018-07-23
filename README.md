@@ -1,6 +1,7 @@
-# IdentityServer4.Contrib.MongoDB
+# Quickstart #6: IdentityServer and ASP.NET Identity
 
-[![Build status](https://ci.appveyor.com/api/projects/status/v3sy5bjmlfdycjqg?svg=true)](https://ci.appveyor.com/project/diogodamiani/identityserver4-mongodb)
-[![NuGet](https://img.shields.io/badge/NuGet-2.0.1-blue.svg)](https://www.nuget.org/packages/IdentityServer4.Contrib.MongoDB/)
+This quickstart uses ASP.NET Identity for identity management.
 
-MongoDB persistence layer for IdentityServer4 based on the Official [EntityFramework](https://github.com/IdentityServer/IdentityServer4.EntityFramework) persistence layer.
+## Tutorial
+
+The tutorial that goes along with this sample can be found here [Using ASP.NET Core Identity](http://docs.identityserver.io/en/release/quickstarts/6_aspnet_identity.html)

@@ -2,7 +2,6 @@
 {
     public class MongoDBConfiguration
     {
-        public string ConnectionString { get; set; }
-        public string Database { get; set; }
+        public string DefaultConnection { get; set; }
     }
 }

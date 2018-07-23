@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>{30BBAAB3-2A0C-4695-8F74-73BCC2C120AA}</ProjectGuid>
+    <ProjectGuid>{66A7184A-1352-4212-B81F-576B4E899891}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>host</DockerServiceName>
+    <DockerServiceName>identityserverwithaspnetidentity</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
