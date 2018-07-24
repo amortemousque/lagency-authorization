@@ -9,10 +9,13 @@
     <Folder Include="Model\IdentityServer\" />
     <Folder Include="Model\Identity\" />
     <Folder Include="Contracts\" />
+    <Folder Include="Commands\" />
+    <Folder Include="CommandHandlers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
+    <PackageReference Include="MediatR" Version="5.0.1" />
   </ItemGroup>
 </Project>

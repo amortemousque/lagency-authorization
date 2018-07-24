@@ -1,13 +1,14 @@
 ﻿namespace LagencyUserApplication.Model
 {
-	using global::MongoDB.Bson;
+    using System;
+    using global::MongoDB.Bson;
 	using global::MongoDB.Bson.Serialization.Attributes;
 
 	public class IdentityRole
 	{
 		public IdentityRole()
 		{
-			Id = ObjectId.GenerateNewId().ToString();
+            Id = Guid.NewGuid().ToString();
 		}
 
 		public IdentityRole(string roleName) : this()
@@ -16,7 +17,7 @@
 			NormalizedName = Name.ToUpper();
 		}
 
-		[BsonRepresentation(BsonType.ObjectId)]
+		[BsonId]
 		public string Id { get; set; }
 
 		public string Name { get; set; }

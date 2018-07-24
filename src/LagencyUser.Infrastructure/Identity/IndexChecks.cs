@@ -1,8 +1,9 @@
 ﻿namespace LagencyUserInfrastructure.Identity
 {
 	using global::MongoDB.Driver;
+    using LagencyUserApplication.Model;
 
-	public static class IndexChecks
+    public static class IndexChecks
 	{
 		public static void EnsureUniqueIndexOnNormalizedUserName<TUser>(IMongoCollection<TUser> users)
 			where TUser : IdentityUser

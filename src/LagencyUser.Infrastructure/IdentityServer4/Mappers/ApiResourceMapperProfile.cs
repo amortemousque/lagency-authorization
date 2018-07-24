@@ -5,6 +5,7 @@
 using AutoMapper;
 using LagencyUserApplication.Model;
 using System.Linq;
+using Models = IdentityServer4.Models;
 
 namespace LagencyUserInfrastructure.IdentityServer4.Mappers
 {
@@ -20,7 +21,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Mappers
         public ApiResourceMapperProfile()
         {
             // entity to model
-            CreateMap<ApiResource, IdentityServer4.Entities.ApiResource>(MemberList.Destination)
+            CreateMap<ApiResource, Models.ApiResource>(MemberList.Destination)
                 .ForMember(x => x.ApiSecrets, opt => opt.MapFrom(src => src.Secrets.Select(x => x)))
                 .ForMember(x => x.Scopes, opt => opt.MapFrom(src => src.Scopes.Select(x => x)))
                 .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => x.Type)));

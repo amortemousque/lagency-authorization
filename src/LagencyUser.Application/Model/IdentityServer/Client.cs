@@ -4,6 +4,7 @@
 
 using IdentityServer4.Models;
 using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using static IdentityServer4.IdentityServerConstants;
 
@@ -11,7 +12,7 @@ namespace LagencyUserApplication.Model
 {
     public class Client
     {
-        public ObjectId Id { get; set; }
+        public Guid Id { get; set; }
         public bool Enabled { get; set; } = true;
         public string ClientId { get; set; }
         public string ProtocolType { get; set; } = ProtocolTypes.OpenIdConnect;

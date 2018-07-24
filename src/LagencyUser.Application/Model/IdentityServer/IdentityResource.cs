@@ -3,13 +3,14 @@
 
 
 using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 
 namespace LagencyUserApplication.Model
 {
     public class IdentityResource
     {
-        public ObjectId Id { get; set; }
+        public Guid Id { get; set; }
         public bool Enabled { get; set; } = true;
         public string Name { get; set; }
         public string DisplayName { get; set; }

@@ -22,7 +22,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Extensions
             this IIdentityServerBuilder builder, string connectionString)
         {
             
-            builder.Services.AddScoped<ConfigurationDbContext>(cw => new ConfigurationDbContext(connectionString));
+            builder.Services.AddScoped<DbContext>(cw => new DbContext(connectionString));
 
             builder.Services.AddTransient<IClientStore, ClientStore>();
             builder.Services.AddTransient<IResourceStore, ResourceStore>();

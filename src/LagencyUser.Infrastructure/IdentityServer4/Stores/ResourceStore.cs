@@ -11,15 +11,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace LagencyUserInfrastructure.IdentityServer4.Stores
 {
     public class ResourceStore : IResourceStore
     {
-        private readonly ConfigurationDbContext _context;
+        private readonly DbContext _context;
         private readonly ILogger<ResourceStore> _logger;
 
-        public ResourceStore(ConfigurationDbContext context, ILogger<ResourceStore> logger)
+        public ResourceStore(DbContext context, ILogger<ResourceStore> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
 
@@ -30,7 +31,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
         public Task<ApiResource> FindApiResourceAsync(string name)
         {
             var apis =
-                from apiResource in _context.ApiResources
+                from apiResource in _context.ApiResources.AsQueryable()
                 where apiResource.Name == name
                 select apiResource;
 
@@ -53,7 +54,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
             var names = scopeNames.ToArray();
 
             var apis =
-                from api in _context.ApiResources
+                from api in _context.ApiResources.AsQueryable()
                 where api.Scopes.Where(x => names.Contains(x.Name)).Any()
                 select api;
 
@@ -70,7 +71,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
             var scopes = scopeNames.ToArray();
 
             var resources =
-                from identityResource in _context.IdentityResources
+                from identityResource in _context.IdentityResources.AsQueryable()
                 where scopes.Contains(identityResource.Name)
                 select identityResource;
 
@@ -83,9 +84,9 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
 
         public Task<Resources> GetAllResourcesAsync()
         {
-            var identity = _context.IdentityResources;
+            var identity = _context.IdentityResources.AsQueryable();
 
-            var apis = _context.ApiResources;
+            var apis = _context.ApiResources.AsQueryable();
 
             var result = new Resources(
                 identity.ToArray().Select(x => x.ToModel()).AsEnumerable(),

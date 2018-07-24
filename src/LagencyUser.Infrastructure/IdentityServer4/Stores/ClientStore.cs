@@ -10,15 +10,17 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using LagencyUserInfrastructure.IdentityServer4.Mappers;
+using MongoDB.Driver;
+using LagencyUserInfrastructure.Context;
 
 namespace LagencyUserInfrastructure.IdentityServer4.Stores
 {
     public class ClientStore : IClientStore
     {
-        private readonly ConfigurationDbContext _context;
+        private readonly DbContext _context;
         private readonly ILogger<ClientStore> _logger;
 
-        public ClientStore(ConfigurationDbContext context, ILogger<ClientStore> logger)
+        public ClientStore(DbContext context, ILogger<ClientStore> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             
@@ -28,7 +30,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
 
         public Task<Client> FindClientByIdAsync(string clientId)
         {
-            var client = _context.Clients.FirstOrDefault(x => x.ClientId == clientId);
+            var client = _context.Clients.AsQueryable().FirstOrDefault(x => x.ClientId == clientId);
 
             var model = client?.ToModel();
 

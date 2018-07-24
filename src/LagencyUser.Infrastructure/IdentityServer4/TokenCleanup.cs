@@ -3,13 +3,13 @@
 
 
 using IdentityServer4.MongoDB.DbContexts;
-using IdentityServer4.MongoDB.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace LagencyUserInfrastructure.IdentityServer4
 {
@@ -90,15 +90,15 @@ namespace LagencyUserInfrastructure.IdentityServer4
                 
                 using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    using (var context = serviceScope.ServiceProvider.GetService<ConfigurationDbContext>())
+                    using (var context = serviceScope.ServiceProvider.GetService<DbContext>())
                     {
-                        var expired = context.PersistedGrants.Where(x => x.Expiration < DateTime.UtcNow).ToArray();
+                        var expired = context.PersistedGrants.AsQueryable().Where(x => x.Expiration < DateTime.UtcNow).ToArray();
 
                         _logger.LogDebug("Clearing {tokenCount} tokens", expired.Length);
 
                         if (expired.Length > 0)
                         {
-                            await context.RemoveExpired();
+                            await context.PersistedGrants.DeleteManyAsync(x => x.Expiration < DateTime.UtcNow);
                         }
                     }
                 }

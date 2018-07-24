@@ -13,6 +13,7 @@ namespace LagencyUserInfrastructure.Identity.Stores
 	using global::MongoDB.Bson;
 	using global::MongoDB.Driver;
     using global::MongoDB.Driver.Linq;
+    using LagencyUserApplication.Model;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>

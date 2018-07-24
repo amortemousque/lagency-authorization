@@ -8,6 +8,7 @@ namespace LagencyUserInfrastructure.Identity.Stores
 	using System.Threading;
 	using System.Threading.Tasks;
 	using global::MongoDB.Driver;
+    using LagencyUserApplication.Model;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>

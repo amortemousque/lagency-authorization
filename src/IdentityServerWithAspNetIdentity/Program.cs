@@ -26,7 +26,7 @@ namespace IdentityServerWithAspNetIdentity
 
           
             SeedData.EnsureSeedData(host.Services);
-             
+            SeedData.EnsureSeedDataServer4(host.Services);
 
             host.Run();
         }

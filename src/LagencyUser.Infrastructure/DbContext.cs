@@ -10,66 +10,76 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IdentityServer4.MongoDB.DbContexts
+namespace LagencyUserInfrastructure.Context
 {
-    public class ConfigurationDbContext
+    public class DbContext : IDisposable
     {
-
         private readonly IMongoDatabase _database; 
         private readonly IMongoClient _client; 
 
-        private IMongoCollection<Client> _clients;
-        private IMongoCollection<IdentityResource> _identityResources;
-        private IMongoCollection<ApiResource> _apiResources;
+        public IMongoCollection<Client> Clients
+        {
+            get
+            {
+                return _database.GetCollection<Client>(Constants.TableNames.Client);
+            }
+        }
 
-        public ConfigurationDbContext(string connectionString)
+        public IMongoCollection<IdentityResource> IdentityResources
+        {
+            get
+            {
+                return _database.GetCollection<IdentityResource>(Constants.TableNames.IdentityResource);
+            }
+        }
+
+
+        public IMongoCollection<ApiResource> ApiResources
+        {
+            get
+            {
+                return _database.GetCollection<ApiResource>(Constants.TableNames.ApiResource);
+            }
+        }
+
+        public IMongoCollection<PersistedGrant> PersistedGrants
+        {
+            get
+            {
+                return _database.GetCollection<PersistedGrant>(Constants.TableNames.PersistedGrant);
+            }
+        }
+
+        public DbContext(string connectionString)
         {
             if (connectionString == null) 
                 throw new ArgumentNullException(nameof(connectionString), "MongoDBConfiguration cannot be null."); 
  
-           
             var mongoDbMementoDatabaseName = MongoUrl.Create(connectionString).DatabaseName;
             var databaseName = MongoUrl.Create(connectionString).DatabaseName; 
  
             _client = new MongoClient(connectionString);
-            _database = _client.GetDatabase(databaseName); 
-
-
-            _clients = _database.GetCollection<Client>(Constants.TableNames.Client);
-            _identityResources = _database.GetCollection<IdentityResource>(Constants.TableNames.IdentityResource);
-            _apiResources = _database.GetCollection<ApiResource>(Constants.TableNames.ApiResource);
-        }
-
-        public IQueryable<Client> Clients
-        {
-            get { return _clients.AsQueryable(); }
-        }
-
-
-        public IQueryable<IdentityResource> IdentityResources
-        {
-            get { return _identityResources.AsQueryable(); }
-        }
-
-        public IQueryable<ApiResource> ApiResources
-        {
-            get { return _apiResources.AsQueryable(); }
+            _database = _client.GetDatabase(databaseName);
         }
 
         public async Task AddClient(Client entity)
         {
-            await _clients.InsertOneAsync(entity);
+            await Clients.InsertOneAsync(entity);
         }
 
         public async Task AddIdentityResource(IdentityResource entity)
         {
-            await _identityResources.InsertOneAsync(entity);
+            await IdentityResources.InsertOneAsync(entity);
         }
 
         public async Task AddApiResource(ApiResource entity)
         {
-            await _apiResources.InsertOneAsync(entity);
+            await ApiResources.InsertOneAsync(entity);
         }
 
+        public void Dispose()
+        {
+            //Todo
+        }
     }
 }    

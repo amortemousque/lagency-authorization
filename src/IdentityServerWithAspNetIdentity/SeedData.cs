@@ -6,10 +6,14 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
+using IdentityServer4.MongoDB.DbContexts;
+using IdentityServerWithAspNetIdentity.Configuration;
 using IdentityServerWithAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
+using LagencyUserInfrastructure.IdentityServer4.Mappers;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -91,6 +95,44 @@ namespace IdentityServerWithAspNetIdentity
                 {
                     Console.WriteLine("bob already exists");
                 }
+            }
+        }
+
+
+        public async static void EnsureSeedDataServer4(IServiceProvider serviceProvider)
+        {
+            using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                try {
+                    var context = scope.ServiceProvider.GetRequiredService<DbContext>();
+
+                    if (!context.Clients.AsQueryable().Any())
+                    {
+                        foreach (var client in Clients.Get().ToList())
+                        {
+                           await context.AddClient(client.ToEntity());
+                        }
+                    }
+
+                    if (!context.IdentityResources.AsQueryable().Any())
+                    {
+                        foreach (var resource in Resources.GetIdentityResources().ToList())
+                        {
+                            await context.AddIdentityResource(resource.ToEntity());
+                        }
+                    }
+
+                    if (!context.ApiResources.AsQueryable().Any())
+                    {
+                        foreach (var resource in Resources.GetApiResources().ToList())
+                        {
+                            await context.AddApiResource(resource.ToEntity());
+                        }
+                    }
+                } catch (Exception ex) {
+                    var toto = ex;
+                } 
+
             }
         }
     }

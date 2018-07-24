@@ -13,8 +13,12 @@ using IdentityServerWithAspNetIdentity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using IdentityServer4;
-using IdentityServerWithAspNetIdentity.Identity;
 using IdentityServerWithAspNetIdentity.Services;
+using LagencyUserInfrastructure.Identity.Extensions;
+using LagencyUserInfrastructure.IdentityServer4.Extensions;
+using LagencyUserInfrastructure.IdentityServer4.Message;
+using LagencyUser.Application.Contracts;
+using LagencyUser.Infrastructure.Repositories;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -32,8 +36,14 @@ namespace IdentityServerWithAspNetIdentity
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddScoped<IApiResourceRepository, ApiResourceRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IIdentityResourceRepository, IdentityResourceRepository>();
+            services.AddScoped<IPersistedGrandRepository, PersistedGrantRepository>();
+
             //Custom extension for mongo implementation
-            services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));
+            //services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddIdentityWithMongoStoresUsingCustomTypes<ApplicationUser, ApplicationRole>(Configuration.GetConnectionString("DefaultConnection"));
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser>>();
             services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
 
@@ -45,6 +55,8 @@ namespace IdentityServerWithAspNetIdentity
 
             services.AddMvc();
 
+
+            //Identity server
             services.AddIdentityServer(options =>
             {
                 options.Events.RaiseSuccessEvents = true;
@@ -54,8 +66,8 @@ namespace IdentityServerWithAspNetIdentity
             //Custom extension for mongo implementation       
             .AddMongoDbConfigurationStore(Configuration.GetConnectionString("DefaultConnection"))
             .AddDeveloperSigningCredential()
-            .AddExtensionGrantValidator<Extensions.ExtensionGrantValidator>()
-            .AddExtensionGrantValidator<Extensions.NoSubjectExtensionGrantValidator>()
+            .AddExtensionGrantValidator<LagencyUserInfrastructure.Identity.Extensions.ExtensionGrantValidator>()
+            .AddExtensionGrantValidator<LagencyUserInfrastructure.Identity.Extensions.NoSubjectExtensionGrantValidator>()
             .AddJwtBearerClientAuthentication()
             .AddAppAuthRedirectUriValidator()
             .AddAspNetIdentity<ApplicationUser>();
@@ -81,7 +93,7 @@ namespace IdentityServerWithAspNetIdentity
             app.UseMvcWithDefaultRoute();
         }
 
-
+          
     }
 
     public static class ServiceExtensions

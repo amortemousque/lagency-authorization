@@ -12,14 +12,14 @@
 	{
 		public IdentityUser()
 		{
-			Id = ObjectId.GenerateNewId().ToString();
+            Id = Guid.NewGuid().ToString();
 			Roles = new List<string>();
 			Logins = new List<IdentityUserLogin>();
 			Claims = new List<IdentityUserClaim>();
 			Tokens = new List<IdentityUserToken>();
 		}
 
-		[BsonRepresentation(BsonType.ObjectId)]
+		[BsonId]
 		public virtual string Id { get; set; }
 
 		public virtual string UserName { get; set; }
