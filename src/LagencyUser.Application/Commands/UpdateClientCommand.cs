@@ -5,7 +5,7 @@ using MediatR;
 
 namespace LagencyUser.Application.Commands
 {
-    public class UpdateClientCommand : IRequest<Client>
+    public class UpdateClientCommand : IRequest<bool>
     {
         public Guid Id { get; set; }
 

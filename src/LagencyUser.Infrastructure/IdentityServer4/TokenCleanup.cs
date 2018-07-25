@@ -1,15 +1,11 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using IdentityServer4.MongoDB.DbContexts;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using LagencyUserInfrastructure.Context;
 
 namespace LagencyUserInfrastructure.IdentityServer4
 {
@@ -90,7 +86,7 @@ namespace LagencyUserInfrastructure.IdentityServer4
                 
                 using (var serviceScope = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
-                    using (var context = serviceScope.ServiceProvider.GetService<DbContext>())
+                    using (var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>())
                     {
                         var expired = context.PersistedGrants.AsQueryable().Where(x => x.Expiration < DateTime.UtcNow).ToArray();
 

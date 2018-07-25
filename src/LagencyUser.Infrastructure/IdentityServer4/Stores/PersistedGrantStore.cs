@@ -3,7 +3,6 @@
 
 
 using IdentityServer4.Models;
-using IdentityServer4.MongoDB.DbContexts;
 using LagencyUserInfrastructure.IdentityServer4.Mappers;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Logging;
@@ -19,11 +18,11 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
 {
     public class PersistedGrantStore : IPersistedGrantStore
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<PersistedGrantStore> _logger;
 
 
-        public PersistedGrantStore(DbContext context, ILogger<PersistedGrantStore> logger)
+        public PersistedGrantStore(ApplicationDbContext context, ILogger<PersistedGrantStore> logger)
         {
             _context = context;
             _logger = logger;

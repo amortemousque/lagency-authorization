@@ -12,9 +12,9 @@ namespace LagencyUser.Infrastructure.Repositories
 {
     public class PersistedGrantRepository : IPersistedGrandRepository
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PersistedGrantRepository(DbContext context)
+        public PersistedGrantRepository(ApplicationDbContext context)
         {
             _context = context;
         }

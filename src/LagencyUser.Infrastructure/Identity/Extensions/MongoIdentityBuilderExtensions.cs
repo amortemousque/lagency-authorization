@@ -90,7 +90,9 @@ namespace LagencyUserInfrastructure.Identity.Extensions
             where TRole : IdentityRole
         {
             return services.AddIdentity<TUser, TRole>()
-                .RegisterMongoStores<TUser, TRole>(connectionString);
+                .RegisterMongoStores<TUser, TRole>(connectionString)
+                .AddDefaultTokenProviders();
+
         }
     }
 }

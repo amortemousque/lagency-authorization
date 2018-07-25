@@ -12,9 +12,9 @@ namespace LagencyUser.Infrastructure.Repositories
 {
     public class IdentityResourceRepository : IIdentityResourceRepository
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public IdentityResourceRepository(DbContext context)
+        public IdentityResourceRepository(ApplicationDbContext context)
         {
             _context = context;
         }

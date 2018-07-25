@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using IdentityServer4.MongoDB;
-using IdentityServer4.MongoDB.DbContexts;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using LagencyUserInfrastructure.Context;
 using LagencyUserInfrastructure.IdentityServer4.Services;
 using LagencyUserInfrastructure.IdentityServer4.Stores;
 using Microsoft.AspNetCore.Builder;
@@ -22,7 +20,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Extensions
             this IIdentityServerBuilder builder, string connectionString)
         {
             
-            builder.Services.AddScoped<DbContext>(cw => new DbContext(connectionString));
+            builder.Services.AddScoped<ApplicationDbContext>(cw => new ApplicationDbContext(connectionString));
 
             builder.Services.AddTransient<IClientStore, ClientStore>();
             builder.Services.AddTransient<IResourceStore, ResourceStore>();

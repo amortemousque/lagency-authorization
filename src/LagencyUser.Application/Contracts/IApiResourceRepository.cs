@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LagencyUserApplication.Model;
 using MongoDB.Driver;
@@ -13,6 +14,8 @@ namespace LagencyUser.Application.Contracts
         Task<ApiResource> GetById(Guid id);
 
         Task<List<ApiResource>> List();
+
+        Task<IQueryable<ApiResource>> GetAll();
 
         Task Add(ApiResource entity);
 

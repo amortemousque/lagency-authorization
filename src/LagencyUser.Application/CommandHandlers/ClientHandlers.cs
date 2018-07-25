@@ -11,7 +11,7 @@ namespace LagencyUser.Application.CommandHandlers
 {
     public class ClientHandlers :
     IRequestHandler<CreateClientCommand, Client>,
-    IRequestHandler<UpdateClientCommand>
+    IRequestHandler<UpdateClientCommand, bool>
     {
         private readonly IClientRepository _repository;
         public ClientHandlers(IClientRepository repository)
@@ -47,7 +47,7 @@ namespace LagencyUser.Application.CommandHandlers
             return api;
         }
 
-        public async Task Handle(UpdateClientCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateClientCommand message, CancellationToken cancellationToken)
         {
             var client = await _repository.GetById(message.Id);
 
@@ -70,6 +70,13 @@ namespace LagencyUser.Application.CommandHandlers
             client.IncludeJwtId = message.IncludeJwtId;
 
             await _repository.SaveAsync(client);
+            return true;
+
         }
+
+        //Task<Unit> IRequestHandler<UpdateClientCommand, Unit>.Handle(UpdateClientCommand request, CancellationToken cancellationToken)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }    

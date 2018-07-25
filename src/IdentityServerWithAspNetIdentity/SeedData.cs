@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using IdentityModel;
-using IdentityServer4.MongoDB.DbContexts;
 using IdentityServerWithAspNetIdentity.Configuration;
 using IdentityServerWithAspNetIdentity.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using LagencyUserInfrastructure.IdentityServer4.Mappers;
+using LagencyUserInfrastructure.Context;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -23,9 +23,6 @@ namespace IdentityServerWithAspNetIdentity
         {
             using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                //ApplicationDbContext context = null;
-                //context.Database.Migrate();
-
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var alice = userMgr.FindByNameAsync("AliceSmith@email.com").Result;
                 if (alice == null)
@@ -104,7 +101,7 @@ namespace IdentityServerWithAspNetIdentity
             using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 try {
-                    var context = scope.ServiceProvider.GetRequiredService<DbContext>();
+                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                     if (!context.Clients.AsQueryable().Any())
                     {

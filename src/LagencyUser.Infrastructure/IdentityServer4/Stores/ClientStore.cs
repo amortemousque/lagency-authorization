@@ -3,7 +3,6 @@
 
 
 using IdentityServer4.Models;
-using IdentityServer4.MongoDB.DbContexts;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Logging;
 using System;
@@ -17,10 +16,10 @@ namespace LagencyUserInfrastructure.IdentityServer4.Stores
 {
     public class ClientStore : IClientStore
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly ILogger<ClientStore> _logger;
 
-        public ClientStore(DbContext context, ILogger<ClientStore> logger)
+        public ClientStore(ApplicationDbContext context, ILogger<ClientStore> logger)
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             

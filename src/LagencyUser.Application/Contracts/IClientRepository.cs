@@ -14,6 +14,8 @@ namespace LagencyUser.Application.Contracts
 
         Task<List<Client>> List();
 
+        Task<IQueryable<Client>> GetAll();
+
         Task Add(Client entity);
 
         Task SaveAsync(Client entity);

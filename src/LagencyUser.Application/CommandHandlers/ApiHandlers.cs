@@ -3,17 +3,15 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Collections.Generic;
-using LagencyTalent.Domain.TalentAggregate;
 using LagencyUser.Application.Commands;
 using LagencyUserApplication.Model;
-using LagencyUserInserstructure.Context;
 using LagencyUser.Application.Contracts;
 
 namespace LagencyUser.Application.CommandHandlers
 {
     public class ApiHandlers : 
     IRequestHandler<CreateApiCommand, ApiResource>,
-    IRequestHandler<UpdateApiCommand>
+    IRequestHandler<UpdateApiCommand, bool>
     {
         private readonly IApiResourceRepository _repository;
         public ApiHandlers(IApiResourceRepository repository)
@@ -38,9 +36,9 @@ namespace LagencyUser.Application.CommandHandlers
 
 
 
-        public async Task Handle(UpdateApiCommand message, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateApiCommand message, CancellationToken cancellationToken)
         {
-            var api = _repository.GetById(message.Id);
+            var api = await _repository.GetById(message.Id);
 
             api.Name = message.Name;
             api.Enabled = message.Enabled;
@@ -48,6 +46,7 @@ namespace LagencyUser.Application.CommandHandlers
             api.Description = message.Description;
 
             await _repository.SaveAsync(api);
+            return true;
         }
 
     }

@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace IdentityServerWithAspNetIdentity.Controllers
 {
@@ -21,18 +25,22 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
+        private readonly IHttpContextAccessor _contextAccessor;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _contextAccessor = contextAccessor;
         }
 
         //
@@ -145,8 +153,31 @@ namespace IdentityServerWithAspNetIdentity.Controllers
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+
             return Challenge(properties, provider);
         }
+
+
+
+        private HttpContext _context;
+        public HttpContext Context
+        {
+            get
+            {
+                var context = _context ?? _contextAccessor?.HttpContext;
+                if (context == null)
+                {
+                    throw new InvalidOperationException("HttpContext must not be null.");
+                }
+                return context;
+            }
+            set
+            {
+                _context = value;
+            }
+        }
+
 
         //
         // GET: /Account/ExternalLoginCallback
@@ -159,6 +190,16 @@ namespace IdentityServerWithAspNetIdentity.Controllers
                 ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
                 return View(nameof(Login));
             }
+            //test
+            //var test = IdentityConstants.ExternalScheme.ToString();
+            //var auth = await Context.AuthenticateAsync();
+            //var items = auth?.Properties?.Items;
+            //if (auth?.Principal == null || items == null || !items.ContainsKey("LoginProvider"))
+            //{
+            //    return null;
+            //}
+            //fin test
+
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {

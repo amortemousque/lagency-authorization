@@ -12,9 +12,9 @@ namespace LagencyUser.Infrastructure.Repositories
 {
     public class ClientRepository : IClientRepository
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ClientRepository(DbContext context)
+        public ClientRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,6 +27,12 @@ namespace LagencyUser.Infrastructure.Repositories
         public async Task<List<Client>> List()
         {
             return await _context.Clients.Find(_ => true).ToListAsync();
+        }
+
+
+        public async Task<IQueryable<Client>> GetAll()
+        {
+            return _context.Clients.AsQueryable();
         }
 
         public async Task Add(Client entity)

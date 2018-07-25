@@ -3,7 +3,7 @@ using MediatR;
 
 namespace LagencyUser.Application.Commands
 {
-    public class UpdateApiCommand : IRequest
+    public class UpdateApiCommand : IRequest<bool>
     {
         public Guid Id { get; set; }
         public bool Enabled { get; set; }

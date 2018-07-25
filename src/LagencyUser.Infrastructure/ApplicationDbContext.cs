@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LagencyUserInfrastructure.Context
 {
-    public class DbContext : IDisposable
+    public class ApplicationDbContext : IDisposable
     {
         private readonly IMongoDatabase _database; 
         private readonly IMongoClient _client; 
@@ -50,7 +50,7 @@ namespace LagencyUserInfrastructure.Context
             }
         }
 
-        public DbContext(string connectionString)
+        public ApplicationDbContext(string connectionString)
         {
             if (connectionString == null) 
                 throw new ArgumentNullException(nameof(connectionString), "MongoDBConfiguration cannot be null."); 

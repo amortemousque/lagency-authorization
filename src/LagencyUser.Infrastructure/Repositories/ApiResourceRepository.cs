@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LagencyUser.Application.Contracts;
 using LagencyUserApplication.Model;
@@ -12,9 +13,9 @@ namespace LagencyUser.Infrastructure.Repositories
 {
     public class ApiResourceRepository : IApiResourceRepository
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ApiResourceRepository(DbContext context)
+        public ApiResourceRepository(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -27,6 +28,11 @@ namespace LagencyUser.Infrastructure.Repositories
         public async Task<List<ApiResource>> List()
         {
             return await _context.ApiResources.Find(_ => true).ToListAsync();
+        }
+
+        public async Task<IQueryable<ApiResource>> GetAll()
+        {
+            return _context.ApiResources.AsQueryable();
         }
 
         public async Task Add(ApiResource entity)
