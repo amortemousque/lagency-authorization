@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public class ApiScope
     {
@@ -14,6 +14,8 @@ namespace LagencyUserApplication.Model
         public bool Required { get; set; }
         public bool Emphasize { get; set; }
         public bool ShowInDiscoveryDocument { get; set; } = true;
-        public List<ApiScopeClaim> UserClaims { get; set; }
+
+        /// List of user-claim types that should be included in the access token.
+        public List<string> UserClaims { get; set; }
     }
 }

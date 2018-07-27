@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
 	public class IdentityUserLogin
 	{

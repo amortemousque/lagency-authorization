@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using static IdentityServer4.IdentityServerConstants;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public class Client
     {
@@ -25,18 +25,27 @@ namespace LagencyUserApplication.Model
         public bool RequireConsent { get; set; } = true;
         public bool AllowRememberConsent { get; set; } = true;
         public bool AlwaysIncludeUserClaimsInIdToken { get; set; }
-        public List<ClientGrantType> AllowedGrantTypes { get; set; }
+
+        /// Specifies the allowed grant types (legal combinations of AuthorizationCode, Implicit, Hybrid, ResourceOwner, ClientCredentials).
+        public List<string> AllowedGrantTypes { get; set; }
+
         public bool RequirePkce { get; set; }
         public bool AllowPlainTextPkce { get; set; }
         public bool AllowAccessTokensViaBrowser { get; set; }
-        public List<ClientRedirectUri> RedirectUris { get; set; }
-        public List<ClientPostLogoutRedirectUri> PostLogoutRedirectUris { get; set; }
+
+        public List<string> RedirectUris { get; set; }
+
+        public List<string> PostLogoutRedirectUris { get; set; }
+
         public string FrontChannelLogoutUri { get; set; }
         public bool FrontChannelLogoutSessionRequired { get; set; } = true;
         public string BackChannelLogoutUri { get; set; }
         public bool BackChannelLogoutSessionRequired { get; set; } = true;
         public bool AllowOfflineAccess { get; set; }
-        public List<ClientScope> AllowedScopes { get; set; }
+
+        /// Specifies the api scopes that the client is allowed to request. If empty, the client can't access any scope
+        public List<string> AllowedScopes { get; set; }
+
         public int IdentityTokenLifetime { get; set; } = 300;
         public int AccessTokenLifetime { get; set; } = 3600;
         public int AuthorizationCodeLifetime { get; set; } = 300;
@@ -48,13 +57,22 @@ namespace LagencyUserApplication.Model
         public int RefreshTokenExpiration { get; set; } = (int)TokenExpiration.Absolute;
         public int AccessTokenType { get; set; } = (int)0; // AccessTokenType.Jwt;
         public bool EnableLocalLogin { get; set; } = true;
-        public List<ClientIdPRestriction> IdentityProviderRestrictions { get; set; }
+
+        /// Specifies which external IdPs can be used with this client (if list is empty all IdPs are allowed). Defaults to empty.
+        public List<string> IdentityProviderRestrictions { get; set; }
         public bool IncludeJwtId { get; set; }
+
+        /// Allows settings claims for the client (will be included in the access token).
         public List<ClientClaim> Claims { get; set; }
+
         public bool AlwaysSendClientClaims { get; set; }
+
         public string ClientClaimsPrefix { get; set; } = "client_";
+
         public string PairWiseSubjectSalt { get; set; }
-        public List<ClientCorsOrigin> AllowedCorsOrigins { get; set; }
+
+        public List<string> AllowedCorsOrigins { get; set; }
+
         public List<ClientProperty> Properties { get; set; }
     }
 }

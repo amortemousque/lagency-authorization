@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using MediatR;
 
 namespace LagencyUser.Application.Commands

@@ -3,9 +3,11 @@ using MediatR;
 using System;
 using System.Threading;
 using LagencyUser.Application.Commands;
-using LagencyUserApplication.Model;
 using LagencyUser.Application.Contracts;
 using System.Linq;
+using System.Collections.Generic;
+using LagencyUser.Application.Model;
+using IModels = IdentityServer4.Models;
 
 namespace LagencyUser.Application.CommandHandlers
 {
@@ -21,30 +23,41 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<Client> Handle(CreateClientCommand message, CancellationToken cancellationToken)
         {
-            var api = new Client
+
+            var client = new Client
             {
                 Id = Guid.NewGuid(),
-                Enabled = message.Enabled,
-                ClientId = message.ClientId,
-                RequireClientSecret = message.RequireClientSecret,
-                ClientName = message.ClientName,
                 Description = message.Description,
+                Enabled = message.Enabled,
+                ClientName = message.ClientName,
                 ClientUri = message.ClientUri,
                 LogoUri = message.LogoUri,
-                RequireConsent = message.RequireConsent,
-                AllowRememberConsent = message.AllowRememberConsent,
-                AlwaysIncludeUserClaimsInIdToken = message.AlwaysIncludeUserClaimsInIdToken,
-                AllowAccessTokensViaBrowser = message.AllowAccessTokensViaBrowser,
-                RedirectUris = message.RedirectUris.Select(c => new ClientRedirectUri() { RedirectUri = c}).ToList(),
-                AllowedCorsOrigins = message.RedirectUris.Select(c => new ClientCorsOrigin() { Origin = c }).ToList(),
-                IdentityTokenLifetime = message.IdentityTokenLifetime,
-                AccessTokenLifetime = message.AccessTokenLifetime,
-                AccessTokenType = message.AccessTokenType,
-                IncludeJwtId = message.IncludeJwtId
+                AllowedCorsOrigins = message.RedirectUris,
+                IdentityTokenLifetime = message.TokenLifetime,
+                AccessTokenLifetime = message.TokenLifetime
             };
 
-            await _repository.Add(api);
-            return api;
+            if(message.ClientTypeId == ClientType.SinglePage.Id) 
+            {
+                client.RequireConsent = false;
+                client.AllowedGrantTypes = IModels.GrantTypes.Implicit.ToList();
+                client.AccessTokenType = (int) IModels.AccessTokenType.Jwt;
+                client.AllowAccessTokensViaBrowser = true;
+                client.AlwaysIncludeUserClaimsInIdToken = true;
+            } 
+            else if (message.ClientTypeId == ClientType.MachineToMachine.Id) 
+            {
+                client.RequireConsent = false;
+                client.AllowedGrantTypes = IModels.GrantTypes.ClientCredentials.ToList();
+                client.ClientSecrets = new List<ClientSecret>  {
+                    new ClientSecret(IModels.HashExtensions.Sha256("secret"))
+                };
+                client.RequireClientSecret = true;
+                client.RedirectUris = message.RedirectUris;
+            }
+
+            await _repository.Add(client);
+            return client;
         }
 
         public async Task<bool> Handle(UpdateClientCommand message, CancellationToken cancellationToken)
@@ -62,8 +75,8 @@ namespace LagencyUser.Application.CommandHandlers
             client.AllowRememberConsent = message.AllowRememberConsent;
             client.AlwaysIncludeUserClaimsInIdToken = message.AlwaysIncludeUserClaimsInIdToken;
             client.AllowAccessTokensViaBrowser = message.AllowAccessTokensViaBrowser;
-            client.RedirectUris = message.RedirectUris.Select(c => new ClientRedirectUri() { RedirectUri = c }).ToList();
-            client.AllowedCorsOrigins = message.RedirectUris.Select(c => new ClientCorsOrigin() { Origin = c }).ToList();
+            client.RedirectUris = message.RedirectUris;
+            client.AllowedCorsOrigins = message.RedirectUris;
             client.IdentityTokenLifetime = message.IdentityTokenLifetime;
             client.AccessTokenLifetime = message.AccessTokenLifetime;
             client.AccessTokenType = message.AccessTokenType;

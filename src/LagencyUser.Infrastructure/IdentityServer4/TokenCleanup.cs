@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using LagencyUserInfrastructure.Context;
+using LagencyUser.Infrastructure.Context;
 
-namespace LagencyUserInfrastructure.IdentityServer4
+namespace LagencyUser.Infrastructure.IdentityServer4
 {
   internal class TokenCleanup
     {

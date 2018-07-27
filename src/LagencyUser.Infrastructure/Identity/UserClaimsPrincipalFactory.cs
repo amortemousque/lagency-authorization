@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using Microsoft.AspNetCore.Identity;
 
-namespace LagencyUserInfrastructure.Identity
+namespace LagencyUser.Infrastructure.Identity
 {
     public class UserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<IdentityUser>
     {
@@ -12,7 +12,10 @@ namespace LagencyUserInfrastructure.Identity
         public async Task<ClaimsPrincipal> CreateAsync(IdentityUser user)
         {
             var principal = await CreateAsync(user);
+            var test = principal.Claims;
             return principal;
         }
+
+
     }
 }

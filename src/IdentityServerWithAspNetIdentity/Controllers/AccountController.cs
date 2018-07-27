@@ -13,6 +13,8 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System;
+using IdentityServer4.Services;
+using IdentityServer4.Stores;
 
 namespace IdentityServerWithAspNetIdentity.Controllers
 {
@@ -21,11 +23,18 @@ namespace IdentityServerWithAspNetIdentity.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+
+        private readonly IIdentityServerInteractionService _interaction;
+        private readonly IClientStore _clientStore;
+        private readonly IAuthenticationSchemeProvider _schemeProvider;
+
+        private readonly IEventService _events;
+
+
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
-        private readonly IHttpContextAccessor _contextAccessor;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -33,14 +42,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory,
-            IHttpContextAccessor contextAccessor)
+        
+            //identity
+            IIdentityServerInteractionService interaction,
+            IClientStore clientStore,
+            IAuthenticationSchemeProvider schemeProvider,
+            IEventService events
+        )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
-            _contextAccessor = contextAccessor;
         }
 
         //
@@ -159,26 +173,6 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         }
 
 
-
-        private HttpContext _context;
-        public HttpContext Context
-        {
-            get
-            {
-                var context = _context ?? _contextAccessor?.HttpContext;
-                if (context == null)
-                {
-                    throw new InvalidOperationException("HttpContext must not be null.");
-                }
-                return context;
-            }
-            set
-            {
-                _context = value;
-            }
-        }
-
-
         //
         // GET: /Account/ExternalLoginCallback
         [HttpGet]
@@ -190,15 +184,6 @@ namespace IdentityServerWithAspNetIdentity.Controllers
                 ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
                 return View(nameof(Login));
             }
-            //test
-            //var test = IdentityConstants.ExternalScheme.ToString();
-            //var auth = await Context.AuthenticateAsync();
-            //var items = auth?.Properties?.Items;
-            //if (auth?.Principal == null || items == null || !items.ContainsKey("LoginProvider"))
-            //{
-            //    return null;
-            //}
-            //fin test
 
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)

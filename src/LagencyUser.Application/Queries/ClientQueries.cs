@@ -5,7 +5,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using LagencyUser.Application.Contracts;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using System.Linq.Expressions;
 
 namespace LagencyUser.Application.Queries

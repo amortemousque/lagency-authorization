@@ -7,9 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using LagencyUserInfrastructure.Context;
+using LagencyUser.Infrastructure.Context;
 
-namespace LagencyUserInfrastructure.IdentityServer4.Services
+namespace LagencyUser.Infrastructure.IdentityServer4.Services
 {
     public class CorsPolicyService : ICorsPolicyService
     {
@@ -31,7 +31,7 @@ namespace LagencyUserInfrastructure.IdentityServer4.Services
             // Details: 
             // System.NotSupportedException: Unable to determine the serialization information for the collection 
             // selector in the tree: aggregate([]).SelectMany(x => x.AllowedCorsOrigins.Select(y => y.Origin))
-            var origins = _context.Clients.AsQueryable().Select(x => x.AllowedCorsOrigins.Select(y => y.Origin)).ToList();
+            var origins = _context.Clients.AsQueryable().Select(x => x.AllowedCorsOrigins).ToList();
 
             // As a workaround, we use SelectMany in memory.
             var distinctOrigins = origins.SelectMany(o => o).Where(x => x != null).Distinct();

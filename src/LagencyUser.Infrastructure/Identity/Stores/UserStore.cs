@@ -2,7 +2,7 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 // I'm using async methods to leverage implicit Task wrapping of results from expression bodied functions.
 
-namespace LagencyUserInfrastructure.Identity.Stores
+namespace LagencyUser.Infrastructure.Identity.Stores
 {
 	using System;
 	using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace LagencyUserInfrastructure.Identity.Stores
 	using global::MongoDB.Bson;
 	using global::MongoDB.Driver;
     using global::MongoDB.Driver.Linq;
-    using LagencyUserApplication.Model;
+    using LagencyUser.Application.Model;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
@@ -85,16 +85,8 @@ namespace LagencyUserInfrastructure.Identity.Stores
 		public virtual async Task SetNormalizedUserNameAsync(TUser user, string normalizedUserName, CancellationToken cancellationToken)
 			=> user.NormalizedUserName = normalizedUserName;
 
-		public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
-			=> IsObjectId(userId)
-				? _Users.Find(u => u.Id == userId).FirstOrDefaultAsync(token)
-				: Task.FromResult<TUser>(null);
-
-		private bool IsObjectId(string id)
-		{
-			ObjectId temp;
-			return ObjectId.TryParse(id, out temp);
-		}
+        public virtual Task<TUser> FindByIdAsync(string userId, CancellationToken token)
+            => _Users.Find(u => u.Id == userId).FirstOrDefaultAsync(token);
 
 		public virtual Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken token)
 			// todo low priority exception on duplicates? or better to enforce unique index to ensure this

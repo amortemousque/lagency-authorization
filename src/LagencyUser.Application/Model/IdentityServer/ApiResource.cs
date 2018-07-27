@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public class ApiResource
     {
@@ -17,6 +17,8 @@ namespace LagencyUserApplication.Model
         public string Description { get; set; }
         public List<ApiSecret> Secrets { get; set; }
         public List<ApiScope> Scopes { get; set; }
-        public List<ApiResourceClaim> UserClaims { get; set; }
+
+        /// List of accociated user claims that should be included when this resource is requested.
+        public List<string> UserClaims { get; set; }
     }
 }

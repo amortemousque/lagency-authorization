@@ -1,7 +1,7 @@
-﻿namespace LagencyUserInfrastructure.Identity
+﻿namespace LagencyUser.Infrastructure.Identity
 {
 	using global::MongoDB.Driver;
-    using LagencyUserApplication.Model;
+    using LagencyUser.Application.Model;
 
     public static class IndexChecks
 	{

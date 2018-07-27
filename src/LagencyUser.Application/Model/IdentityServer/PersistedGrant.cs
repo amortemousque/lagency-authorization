@@ -5,7 +5,7 @@
 using MongoDB.Bson;
 using System;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public class PersistedGrant
     {

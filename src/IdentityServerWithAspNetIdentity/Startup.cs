@@ -14,9 +14,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using IdentityServer4;
 using IdentityServerWithAspNetIdentity.Services;
-using LagencyUserInfrastructure.Identity.Extensions;
-using LagencyUserInfrastructure.IdentityServer4.Extensions;
-using LagencyUserInfrastructure.IdentityServer4.Message;
+using LagencyUser.Infrastructure.Identity.Extensions;
+using LagencyUser.Infrastructure.IdentityServer4.Extensions;
+using LagencyUser.Infrastructure.IdentityServer4.Message;
 using LagencyUser.Application.Contracts;
 using LagencyUser.Infrastructure.Repositories;
 using LagencyUser.Application.CommandHandlers;
@@ -75,7 +75,7 @@ namespace IdentityServerWithAspNetIdentity
             });
 
        
-            services.AddCors();    
+            services.AddCors();
 
             //Identity server
 
@@ -88,8 +88,8 @@ namespace IdentityServerWithAspNetIdentity
             //Custom extension for mongo implementation       
             .AddMongoDbConfigurationStore(Configuration.GetConnectionString("DefaultConnection"))
             .AddDeveloperSigningCredential()
-            .AddExtensionGrantValidator<LagencyUserInfrastructure.Identity.Extensions.ExtensionGrantValidator>()
-            .AddExtensionGrantValidator<LagencyUserInfrastructure.Identity.Extensions.NoSubjectExtensionGrantValidator>()
+            .AddExtensionGrantValidator<LagencyUser.Infrastructure.Identity.Extensions.ExtensionGrantValidator>()
+            .AddExtensionGrantValidator<LagencyUser.Infrastructure.Identity.Extensions.NoSubjectExtensionGrantValidator>()
             .AddJwtBearerClientAuthentication()
             .AddAppAuthRedirectUriValidator()
             .AddAspNetIdentity<ApplicationUser>();
@@ -110,8 +110,13 @@ namespace IdentityServerWithAspNetIdentity
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseCors(
+                options => options.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+             );
+
             app.UseStaticFiles();
-            app.UseAuthentication();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
         }

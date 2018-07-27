@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="IdentityServer4\" />
     <Folder Include="IdentityServer4\Stores\" />
-    <Folder Include="IdentityServer4\Mappers\" />
     <Folder Include="IdentityServer4\Services\" />
     <Folder Include="IdentityServer4\Extensions\" />
     <Folder Include="Identity\" />
@@ -15,14 +14,20 @@
     <Folder Include="Identity\Extensions\" />
     <Folder Include="Message\" />
     <Folder Include="Repositories\" />
+    <Folder Include="IdentityServer4\Models\" />
+    <Folder Include="IdentityServer4\Mappers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
     <PackageReference Include="IdentityServer4" Version="2.2.0" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Application\LagencyUser.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IdentityServer4\CustomClaimClaimTypes.cs" />
   </ItemGroup>
 </Project>

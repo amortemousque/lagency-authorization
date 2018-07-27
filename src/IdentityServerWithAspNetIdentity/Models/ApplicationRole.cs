@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 namespace IdentityServerWithAspNetIdentity.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationRole : LagencyUserApplication.Model.IdentityRole
+    public class ApplicationRole : LagencyUser.Application.Model.IdentityRole
     {
     }
 }

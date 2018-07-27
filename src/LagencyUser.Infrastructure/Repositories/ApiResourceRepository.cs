@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using LagencyUser.Application.Contracts;
-using LagencyUserApplication.Model;
-using LagencyUserInfrastructure.Context;
+using LagencyUser.Application.Model;
+using LagencyUser.Infrastructure.Context;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

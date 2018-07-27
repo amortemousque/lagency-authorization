@@ -2,15 +2,15 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-using LagencyUserApplication.Model;
-using LagencyUserInfrastructure.IdentityServer4;
+using LagencyUser.Application.Model;
+using LagencyUser.Infrastructure.IdentityServer4;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LagencyUserInfrastructure.Context
+namespace LagencyUser.Infrastructure.Context
 {
     public class ApplicationDbContext : IDisposable
     {

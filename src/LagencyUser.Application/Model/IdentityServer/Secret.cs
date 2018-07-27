@@ -5,7 +5,7 @@
 using System;
 using static IdentityServer4.IdentityServerConstants;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public abstract class Secret
     {

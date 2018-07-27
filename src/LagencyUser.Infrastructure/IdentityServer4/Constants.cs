@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-namespace LagencyUserInfrastructure.IdentityServer4
+namespace LagencyUser.Infrastructure.IdentityServer4
 {
     public class Constants
     {
@@ -31,5 +31,24 @@ namespace LagencyUserInfrastructure.IdentityServer4
             // Operational
             public const string PersistedGrant = "PersistedGrants";
         }
+
+        public static class CustomClaimTypes
+        {
+            public const string TenantId = "tenant_id";
+
+            public const string TenantName = "tenant_name";
+        }
+
+
+
+        public static class CustomScopes
+        {
+            public const string Tenant = "tenant";
+
+            public const string Scope = "scope";
+
+            public const string Role = "role";
+        }
+
     }
 }

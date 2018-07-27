@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServerWithAspNetIdentity.Services;
 
-namespace LagencyUserInfrastructure.IdentityServer4.Message
+namespace LagencyUser.Infrastructure.IdentityServer4.Message
 {
     // This class is used by the application to send Email and SMS
     // when you turn on two-factor authentication in ASP.NET Identity.

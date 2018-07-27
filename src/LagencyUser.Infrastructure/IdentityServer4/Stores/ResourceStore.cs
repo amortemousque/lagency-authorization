@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
-using LagencyUserInfrastructure.Context;
+using LagencyUser.Infrastructure.Context;
 
-namespace LagencyUserInfrastructure.IdentityServer4.Stores
+namespace LagencyUser.Infrastructure.IdentityServer4.Stores
 {
     public class ResourceStore : IResourceStore
     {

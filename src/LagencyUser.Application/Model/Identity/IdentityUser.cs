@@ -1,4 +1,4 @@
-﻿namespace LagencyUserApplication.Model
+﻿namespace LagencyUser.Application.Model
 {
 	using System;
 	using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LagencyUserApplication.Model
+namespace LagencyUser.Application.Model
 {
     public class ClientProperty
     {

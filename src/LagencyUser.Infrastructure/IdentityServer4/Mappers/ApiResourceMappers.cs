@@ -3,7 +3,7 @@
 
 
 using AutoMapper;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using Models = IdentityServer4.Models;
 
 namespace LagencyUserInfrastructure.IdentityServer4.Mappers

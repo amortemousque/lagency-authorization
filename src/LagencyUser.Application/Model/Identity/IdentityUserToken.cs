@@ -1,4 +1,4 @@
-﻿namespace LagencyUserApplication.Model
+﻿namespace LagencyUser.Application.Model
 {
 	/// <summary>
 	///     Authentication token associated with a user

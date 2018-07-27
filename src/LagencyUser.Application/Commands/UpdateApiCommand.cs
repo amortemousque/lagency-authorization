@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MediatR;
 
 namespace LagencyUser.Application.Commands
@@ -10,6 +11,7 @@ namespace LagencyUser.Application.Commands
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Description { get; set; }
+        public List<string> UserClaims { get; set; } 
     }
 }
     

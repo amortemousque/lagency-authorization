@@ -1,10 +1,10 @@
 ﻿// ReSharper disable once CheckNamespace - Common convention to locate extensions in Microsoft namespaces for simplifying autocompletion as a consumer.
 
-namespace LagencyUserInfrastructure.Identity.Extensions
+namespace LagencyUser.Infrastructure.Identity.Extensions
 {
     using System;
-    using LagencyUserApplication.Model;
-    using LagencyUserInfrastructure.Identity.Stores;
+    using LagencyUser.Application.Model;
+    using LagencyUser.Infrastructure.Identity.Stores;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
     using MongoDB.Driver;

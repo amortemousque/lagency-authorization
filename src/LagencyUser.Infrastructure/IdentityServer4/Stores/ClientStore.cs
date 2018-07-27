@@ -10,9 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using LagencyUserInfrastructure.IdentityServer4.Mappers;
 using MongoDB.Driver;
-using LagencyUserInfrastructure.Context;
+using LagencyUser.Infrastructure.Context;
 
-namespace LagencyUserInfrastructure.IdentityServer4.Stores
+namespace LagencyUser.Infrastructure.IdentityServer4.Stores
 {
     public class ClientStore : IClientStore
     {

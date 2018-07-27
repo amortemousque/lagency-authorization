@@ -3,16 +3,16 @@
 
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
-using LagencyUserInfrastructure.Context;
-using LagencyUserInfrastructure.IdentityServer4.Services;
-using LagencyUserInfrastructure.IdentityServer4.Stores;
+using LagencyUser.Infrastructure.Context;
+using LagencyUser.Infrastructure.IdentityServer4.Services;
+using LagencyUser.Infrastructure.IdentityServer4.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace LagencyUserInfrastructure.IdentityServer4.Extensions
+namespace LagencyUser.Infrastructure.IdentityServer4.Extensions
 {
     public static class IdentityServerMongoDBBuilderExtensions
     {

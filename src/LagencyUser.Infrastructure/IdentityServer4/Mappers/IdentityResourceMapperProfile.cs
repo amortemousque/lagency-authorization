@@ -3,7 +3,7 @@
 
 
 using AutoMapper;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using System.Linq;
 using Models = IdentityServer4.Models;
 
@@ -23,11 +23,11 @@ namespace LagencyUserInfrastructure.IdentityServer4.Mappers
         {
             // entity to model
             CreateMap<IdentityResource, Models.IdentityResource>(MemberList.Destination)
-                .ForMember(x => x.UserClaims, opt => opt.MapFrom(src => src.UserClaims.Select(x => x.Type)));
+                .ForMember(x => x.UserClaims, opt => opt.MapFrom(src => src.UserClaims.Select(x => x)));
 
             // model to entity
             CreateMap<Models.IdentityResource, IdentityResource>(MemberList.Source)
-                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x => new IdentityClaim { Type = x })));
+                .ForMember(x => x.UserClaims, opts => opts.MapFrom(src => src.UserClaims.Select(x =>  x )));
         }
     }
 }

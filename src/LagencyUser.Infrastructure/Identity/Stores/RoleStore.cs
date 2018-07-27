@@ -2,13 +2,13 @@
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 // I'm using async methods to leverage implicit Task wrapping of results from expression bodied functions.
 
-namespace LagencyUserInfrastructure.Identity.Stores
+namespace LagencyUser.Infrastructure.Identity.Stores
 {
 	using System.Linq;
 	using System.Threading;
 	using System.Threading.Tasks;
 	using global::MongoDB.Driver;
-    using LagencyUserApplication.Model;
+    using LagencyUser.Application.Model;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>

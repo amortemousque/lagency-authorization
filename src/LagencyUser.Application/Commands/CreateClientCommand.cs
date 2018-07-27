@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using MediatR;
 
 namespace LagencyUser.Application.Commands
 {
     public class CreateClientCommand : IRequest<Client>
     {
+        public int ClientTypeId { get; set; }
+
         public bool Enabled { get; set; } = true;
 
         public string ClientId { get; set; }
-
-        public bool RequireClientSecret { get; set; } = true;
 
         public string ClientName { get; set; }
 
@@ -31,13 +31,8 @@ namespace LagencyUser.Application.Commands
 
         public List<string> RedirectUris { get; set; }
 
-        public int IdentityTokenLifetime { get; set; }
+        public int TokenLifetime { get; set; }
 
-        public int AccessTokenLifetime { get; set; }
-
-        public int AccessTokenType { get; set; } // AccessTokenType.Jwt;
-
-        public bool IncludeJwtId { get; set; }
 
         public List<string> AllowedCorsOrigins { get; set; }
     }

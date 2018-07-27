@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using MediatR;
 using LagencyUser.Application.Queries;
 using System;
-using LagencyUserApplication.Model;
+using LagencyUser.Application.Model;
 using System.Collections.Generic;
 using LagencyUser.Application.Commands;
 

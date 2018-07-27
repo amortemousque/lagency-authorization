@@ -4,6 +4,7 @@
 
 using IdentityModel;
 using IdentityServer4.Models;
+using LagencyUser.Infrastructure.IdentityServer4.Models;
 using System.Collections.Generic;
 
 namespace IdentityServerWithAspNetIdentity.Configuration
@@ -12,16 +13,19 @@ namespace IdentityServerWithAspNetIdentity.Configuration
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            return new[]
+            return new IdentityResource[]
             {
                 // some standard scopes from the OIDC spec
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email(),
-
-                // custom identity resource with some consolidated claims
-                new IdentityResource("custom.profile", new[] { JwtClaimTypes.Name, JwtClaimTypes.Email, "location" })
+                new IdentityResources.Address(),
+                new IdentityResources.Phone(),
+                new CustomIdentityResources.Role(),
+                new CustomIdentityResources.Scope(),
+                new CustomIdentityResources.Tenant()
             };
+               
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
