@@ -8,14 +8,19 @@ using System.Linq;
 using System.Collections.Generic;
 using LagencyUser.Application.Model;
 using IModels = IdentityServer4.Models;
+using LagencyUser.Application.Service;
+using IdentityServer4;
 
 namespace LagencyUser.Application.CommandHandlers
 {
     public class ClientHandlers :
     IRequestHandler<CreateClientCommand, Client>,
-    IRequestHandler<UpdateClientCommand, bool>
+    IRequestHandler<UpdateClientCommand, bool>,
+    IRequestHandler<DeleteClientCommand, bool>
+
     {
         private readonly IClientRepository _repository;
+
         public ClientHandlers(IClientRepository repository)
         {
             _repository = repository;
@@ -23,19 +28,15 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<Client> Handle(CreateClientCommand message, CancellationToken cancellationToken)
         {
-
             var client = new Client
             {
                 Id = Guid.NewGuid(),
-                Description = message.Description,
-                Enabled = message.Enabled,
                 ClientName = message.ClientName,
-                ClientUri = message.ClientUri,
-                LogoUri = message.LogoUri,
-                AllowedCorsOrigins = message.RedirectUris,
-                IdentityTokenLifetime = message.TokenLifetime,
-                AccessTokenLifetime = message.TokenLifetime
+                ClientTypeId = message.ClientTypeId,
+                ClientId = ClientIdGenerator.Generate(32)
             };
+
+
 
             if(message.ClientTypeId == ClientType.SinglePage.Id) 
             {
@@ -53,7 +54,6 @@ namespace LagencyUser.Application.CommandHandlers
                     new ClientSecret(IModels.HashExtensions.Sha256("secret"))
                 };
                 client.RequireClientSecret = true;
-                client.RedirectUris = message.RedirectUris;
             }
 
             await _repository.Add(client);
@@ -62,34 +62,32 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<bool> Handle(UpdateClientCommand message, CancellationToken cancellationToken)
         {
-            var client = await _repository.GetById(message.Id);
+            var client = await _repository.GetById(message.Id) ?? throw new KeyNotFoundException();
 
             client.Enabled = message.Enabled;
-            client.ClientId = message.ClientId;
             client.RequireClientSecret = message.RequireClientSecret;
             client.ClientName = message.ClientName;
             client.Description = message.Description;
             client.ClientUri = message.ClientUri;
             client.LogoUri = message.LogoUri;
             client.RequireConsent = message.RequireConsent;
-            client.AllowRememberConsent = message.AllowRememberConsent;
             client.AlwaysIncludeUserClaimsInIdToken = message.AlwaysIncludeUserClaimsInIdToken;
             client.AllowAccessTokensViaBrowser = message.AllowAccessTokensViaBrowser;
             client.RedirectUris = message.RedirectUris;
-            client.AllowedCorsOrigins = message.RedirectUris;
+            client.AllowedScopes = message.AllowedScopes;
+            client.AllowedCorsOrigins = message.AllowedCorsOrigins;
             client.IdentityTokenLifetime = message.IdentityTokenLifetime;
-            client.AccessTokenLifetime = message.AccessTokenLifetime;
-            client.AccessTokenType = message.AccessTokenType;
-            client.IncludeJwtId = message.IncludeJwtId;
-
+          
             await _repository.SaveAsync(client);
+            return true;
+        }
+
+        public async Task<bool> Handle(DeleteClientCommand message, CancellationToken cancellationToken)
+        {
+            var client = await _repository.GetById(message.Id) ?? throw new KeyNotFoundException();
+            await _repository.Delete(message.Id);
             return true;
 
         }
-
-        //Task<Unit> IRequestHandler<UpdateClientCommand, Unit>.Handle(UpdateClientCommand request, CancellationToken cancellationToken)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }    

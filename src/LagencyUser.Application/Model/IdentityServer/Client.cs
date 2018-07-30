@@ -74,5 +74,8 @@ namespace LagencyUser.Application.Model
         public List<string> AllowedCorsOrigins { get; set; }
 
         public List<ClientProperty> Properties { get; set; }
+
+
+        public int ClientTypeId { get; set; }
     }
 }

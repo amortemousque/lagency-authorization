@@ -33,7 +33,7 @@ namespace LagencyUser.Application.Queries
         public async Task<List<Client>> GetClientsAsync(string clientName, bool? enabled)
         {
             
-            var response = await _clientRepository.GetAll();
+                var response = await _clientRepository.GetAll();
                                                           
             if(!string.IsNullOrWhiteSpace(clientName)) {
                 response = response.Where(a => a.ClientName.StartsWith(clientName));

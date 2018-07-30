@@ -41,6 +41,7 @@ namespace IdentityServerWithAspNetIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             // Application - Repositories
             services.AddScoped<IApiResourceRepository, ApiResourceRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -67,6 +68,7 @@ namespace IdentityServerWithAspNetIdentity
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc();
             services.AddApiVersioning(o =>                   
             {

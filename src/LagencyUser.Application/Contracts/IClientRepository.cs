@@ -18,6 +18,8 @@ namespace LagencyUser.Application.Contracts
 
         Task Add(Client entity);
 
+        Task Delete(Guid id);
+
         Task SaveAsync(Client entity);
     }
 }

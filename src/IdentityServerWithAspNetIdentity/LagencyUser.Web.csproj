@@ -33,6 +33,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Views\" />
     <Folder Include="Configuration\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="hosting.json" />
@@ -51,5 +52,22 @@
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Infrastructure\LagencyUser.Infrastructure.csproj" />
     <ProjectReference Include="..\LagencyUser.Application\LagencyUser.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Controllers.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Controllers.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Controllers.CollectionsController.resx">
+      <LastGenOutput>Controllers.CollectionsController.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Controllers.Designer.cs">
+      <DependentUpon>Controllers.CollectionsController.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Controllers.CollectionsController.Designer.cs">
+      <DependentUpon>Controllers.CollectionsController.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

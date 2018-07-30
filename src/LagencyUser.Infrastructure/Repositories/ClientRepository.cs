@@ -40,6 +40,11 @@ namespace LagencyUser.Infrastructure.Repositories
             await _context.Clients.InsertOneAsync(entity);
         }
 
+        public async Task Delete(Guid id)
+        {
+            await _context.Clients.DeleteOneAsync(c => c.Id == id);
+        }
+
         public async Task SaveAsync(Client entity)
         {
             await _context.Clients.ReplaceOneAsync(doc => doc.Id == entity.Id, entity, new UpdateOptions() { IsUpsert = true });

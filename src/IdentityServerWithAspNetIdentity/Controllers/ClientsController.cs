@@ -68,6 +68,24 @@ namespace IdentityServerWithAspNetIdentity.Controllers
             var client = await _mediator.Send(command);
             return Ok(client);
         }
+        
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> Put([FromBody] UpdateClientCommand command)
+        {
+            var client = await _mediator.Send(command);
+            return Ok();
+        }
 
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> Delete(DeleteClientCommand command)
+        {
+            var client = await _mediator.Send(command);
+            return Ok();
+        }
     }
 }
