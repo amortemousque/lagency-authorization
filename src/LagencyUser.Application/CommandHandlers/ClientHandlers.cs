@@ -33,7 +33,10 @@ namespace LagencyUser.Application.CommandHandlers
                 Id = Guid.NewGuid(),
                 ClientName = message.ClientName,
                 ClientTypeId = message.ClientTypeId,
-                ClientId = ClientIdGenerator.Generate(32)
+                ClientId = ClientIdGenerator.Generate(32),
+                AllowedScopes = {
+                    IdentityServerConstants.StandardScopes.OpenId  
+                }
             };
 
 
@@ -63,6 +66,10 @@ namespace LagencyUser.Application.CommandHandlers
         public async Task<bool> Handle(UpdateClientCommand message, CancellationToken cancellationToken)
         {
             var client = await _repository.GetById(message.Id) ?? throw new KeyNotFoundException();
+
+            message.AllowedScopes = message.AllowedScopes ?? new List<string>();
+
+            //message.AllowedScopes.Add(IdentityServerConstants.StandardScopes.OpenId);
 
             client.Enabled = message.Enabled;
             client.RequireClientSecret = message.RequireClientSecret;
