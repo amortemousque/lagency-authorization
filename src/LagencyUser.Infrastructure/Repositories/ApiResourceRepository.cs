@@ -40,6 +40,11 @@ namespace LagencyUser.Infrastructure.Repositories
             await _context.ApiResources.InsertOneAsync(entity);
         }
 
+        public async Task Delete(Guid id)
+        {
+            await _context.ApiResources.DeleteOneAsync(c => c.Id == id);
+        }
+
         public async Task SaveAsync(ApiResource entity)
         {
             await _context.ApiResources.ReplaceOneAsync(doc => doc.Id == entity.Id, entity, new UpdateOptions() { IsUpsert = true });

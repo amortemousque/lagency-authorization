@@ -51,6 +51,13 @@ namespace LagencyUser.Application.Queries
 
             return response.ToList();
         }
+
+
+        public async Task<List<ApiScope>> GetApiScopesAsync(Guid apiResourceId)
+        {
+            var response = await _apiResourceRepository.GetById(apiResourceId);
+            return response.Scopes.ToList();
+        }
             
     }
 

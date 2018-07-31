@@ -13,8 +13,10 @@ namespace LagencyUser.Application.CommandHandlers
     public class ApiHandlers : 
     IRequestHandler<CreateApiCommand, ApiResource>,
     IRequestHandler<CreateApiScopeCommand, ApiScope>,
+    IRequestHandler<DeleteApiCommand, bool>,
     IRequestHandler<UpdateApiCommand, bool>,
     IRequestHandler<UpdateApiScopeCommand, bool>
+
 
     {
         private readonly IApiResourceRepository _repository;
@@ -29,10 +31,8 @@ namespace LagencyUser.Application.CommandHandlers
             {
                 Id = Guid.NewGuid(),
                 Name = message.Name,
-                Description = message.Description,
                 DisplayName = message.DisplayName,
-                Enabled = message.Enabled,
-                UserClaims = message.UserClaims
+                Enabled = true
             };
 
             await _repository.Add(api);
@@ -55,34 +55,55 @@ namespace LagencyUser.Application.CommandHandlers
             return true;
         }
 
+        public async Task<bool> Handle(DeleteApiCommand message, CancellationToken cancellationToken)
+        {
+            var client = await _repository.GetById(message.Id) ?? throw new KeyNotFoundException();
+            await _repository.Delete(message.Id);
+            return true;
 
+        }
+
+
+        //Api Scope
         public async Task<ApiScope> Handle(CreateApiScopeCommand message, CancellationToken cancellationToken)
         {
-            var api = await _repository.GetById(message.ApiResourceId);
+            var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
 
             var apiScope = new ApiScope
             {
+                Id = Guid.NewGuid(),
+                ApiResourceId = api.Id,
                 Name = message.Name,
-                DisplayName = message.DisplayName,
+                DisplayName = message.Name,
                 Description = message.Description
             };
 
             api.Scopes.Add(apiScope);
 
-            await _repository.Add(api);
+            await _repository.SaveAsync(api);
             return apiScope;
         }
 
         public async Task<bool> Handle(UpdateApiScopeCommand message, CancellationToken cancellationToken)
         {
-            var api = await _repository.GetById(message.ApiResourceId);
-            var scope = api.Scopes.FirstOrDefault(s => s.Name.ToLower() == message.Name.ToLower());
-            scope.DisplayName = message.DisplayName;
+            var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
+            var scope = api.Scopes.FirstOrDefault(s => s.Id == message.Id) ?? throw new KeyNotFoundException();
+            scope.Name = message.Name;
+            scope.DisplayName = message.Name;
             scope.Description = message.Description;
 
             await _repository.SaveAsync(api);
             return true;
         }
 
+        public async Task<bool> Handle(DeleteApiScopeCommand message, CancellationToken cancellationToken)
+        {
+            var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
+            var scope = api.Scopes.FirstOrDefault(s => s.Id == message.Id) ?? throw new KeyNotFoundException();
+            api.Scopes.Remove(scope);
+            await _repository.SaveAsync(api);
+            return true;
+
+        }
     }
 }

@@ -17,6 +17,8 @@ namespace LagencyUser.Application.Contracts
 
         Task<IQueryable<ApiResource>> GetAll();
 
+        Task Delete(Guid id);
+
         Task Add(ApiResource entity);
 
         Task SaveAsync(ApiResource entity);

@@ -69,6 +69,65 @@ namespace IdentityServerWithAspNetIdentity.Controllers
             return Ok(apiResource);
         }
 
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> Put([FromBody]UpdateApiCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> Delete(DeleteApiCommand command)
+        {
+            var client = await _mediator.Send(command);
+            return Ok();
+        }
+
+
+        //scope
+
+        [HttpGet("{apiResourceId}/scopes", Name = "GetApiScopes")]
+        [ProducesResponseType(typeof(ApiResource[]), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> GetApiScopes(Guid apiResourceId)
+        {
+            var scopes = await _apiQueries.GetApiScopesAsync(apiResourceId);
+            return Ok(scopes);
+        }
+
+
+        [HttpPost("{apiResourceId}/scopes", Name = "PostApiScope")]
+        [ProducesResponseType(typeof(ApiResource), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> PostApiScope([FromBody]CreateApiScopeCommand command)
+        {
+            var apiResource = await _mediator.Send(command);
+            return Ok(apiResource);
+        }
+
+
+        [HttpPut("{apiResourceId}/scopes/{id}", Name = "PutApiScope")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> PutApiScope([FromBody]UpdateApiScopeCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok();
+        }
+
+        [HttpDelete("{apiResourceId}/scopes/{id}", Name = "DeleteApiScope")]
+        [ProducesResponseType(typeof(void), 200)]
+        [ProducesResponseType(typeof(void), 400)]
+        public async Task<IActionResult> DeleteApiScope(DeleteApiScopeCommand command)
+        {
+            var client = await _mediator.Send(command);
+            return Ok();
+        }
     }
 }
     
