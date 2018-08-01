@@ -47,6 +47,7 @@ namespace IdentityServerWithAspNetIdentity
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IIdentityResourceRepository, IdentityResourceRepository>();
             services.AddScoped<IPersistedGrandRepository, PersistedGrantRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
 
             // Application - Commands
             services.AddMediatR(typeof(ApiHandlers).GetTypeInfo().Assembly);

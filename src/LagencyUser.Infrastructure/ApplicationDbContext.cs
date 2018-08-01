@@ -17,6 +17,16 @@ namespace LagencyUser.Infrastructure.Context
         private readonly IMongoDatabase _database; 
         private readonly IMongoClient _client; 
 
+
+        public IMongoCollection<Tenant> Tenants
+        {
+            get
+            {
+                return _database.GetCollection<Tenant>("Tenants");
+            }
+        }
+
+
         public IMongoCollection<Client> Clients
         {
             get
@@ -49,6 +59,8 @@ namespace LagencyUser.Infrastructure.Context
                 return _database.GetCollection<PersistedGrant>(Constants.TableNames.PersistedGrant);
             }
         }
+
+
 
         public ApplicationDbContext(string connectionString)
         {

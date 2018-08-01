@@ -13,6 +13,7 @@
     <Folder Include="Commands\Shared\" />
     <Folder Include="Model\SeedWork\" />
     <Folder Include="Services\" />
+    <Folder Include="Model\Tenant\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
