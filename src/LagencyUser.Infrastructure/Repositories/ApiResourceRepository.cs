@@ -49,6 +49,12 @@ namespace LagencyUser.Infrastructure.Repositories
         {
             await _context.ApiResources.ReplaceOneAsync(doc => doc.Id == entity.Id, entity, new UpdateOptions() { IsUpsert = true });
         }
+
+        public async Task<bool> HasUniqName(string name) 
+        {
+            return ! await _context.ApiResources.AsQueryable().AnyAsync(a => a.Name.ToLower() == name.ToLower());
+        }
+
     }
 }
     

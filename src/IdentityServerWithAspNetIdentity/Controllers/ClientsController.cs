@@ -48,6 +48,10 @@ namespace IdentityServerWithAspNetIdentity.Controllers
             {
                 return NotFound();
             }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
         [HttpGet]
@@ -55,8 +59,15 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> GetClients(string name, bool? enabled)
         {
-            var clients = await _clientQueries.GetClientsAsync(name, enabled);
-            return Ok(clients);
+            try
+            {
+                var clients = await _clientQueries.GetClientsAsync(name, enabled);
+                return Ok(clients);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
         }
 
 
@@ -65,8 +76,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Post([FromBody]CreateClientCommand command)
         {
-            var client = await _mediator.Send(command);
-            return Ok(client);
+            try
+            {
+                var client = await _mediator.Send(command);
+                return Ok(client);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
         
         [HttpPut("{id}")]
@@ -74,8 +96,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Put([FromBody] UpdateClientCommand command)
         {
-            var client = await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                var client = await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
 
@@ -84,8 +117,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Delete(DeleteClientCommand command)
         {
-            var client = await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                var client = await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
     }
 }

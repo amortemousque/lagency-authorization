@@ -56,6 +56,7 @@ namespace IdentityServerWithAspNetIdentity
             // Application - Queries
             services.AddScoped<ApiQueries, ApiQueries>();
             services.AddScoped<ClientQueries, ClientQueries>();
+            services.AddScoped<TenantQueries, TenantQueries>();
 
             //Custom extension for mongo implementation
             //services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));

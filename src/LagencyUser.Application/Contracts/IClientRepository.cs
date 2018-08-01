@@ -21,6 +21,8 @@ namespace LagencyUser.Application.Contracts
         Task Delete(Guid id);
 
         Task SaveAsync(Client entity);
+
+        Task<bool> HasUniqName(string name, Guid? id = null);
     }
 }
             

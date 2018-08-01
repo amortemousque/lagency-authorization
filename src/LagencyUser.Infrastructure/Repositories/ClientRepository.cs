@@ -49,6 +49,15 @@ namespace LagencyUser.Infrastructure.Repositories
         {
             await _context.Clients.ReplaceOneAsync(doc => doc.Id == entity.Id, entity, new UpdateOptions() { IsUpsert = true });
         }
+
+        public async Task<bool> HasUniqName(string name, Guid? id = null)
+        {
+            if (id == null) {
+                return !await _context.Clients.AsQueryable().AnyAsync(a => a.ClientName.ToLower() == name.ToLower());
+            } else {
+                return !await _context.Clients.AsQueryable().AnyAsync(a => a.ClientName.ToLower() == name.ToLower() && a.Id != id);
+            }
+        }
     }
 }
         

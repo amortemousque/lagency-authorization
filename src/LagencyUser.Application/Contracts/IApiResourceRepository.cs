@@ -22,6 +22,8 @@ namespace LagencyUser.Application.Contracts
         Task Add(ApiResource entity);
 
         Task SaveAsync(ApiResource entity);
+
+        Task<bool> HasUniqName(string name);
     }
 }
         

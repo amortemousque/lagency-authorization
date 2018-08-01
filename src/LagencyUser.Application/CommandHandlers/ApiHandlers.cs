@@ -12,12 +12,11 @@ namespace LagencyUser.Application.CommandHandlers
 {
     public class ApiHandlers : 
     IRequestHandler<CreateApiCommand, ApiResource>,
-    IRequestHandler<CreateApiScopeCommand, ApiScope>,
     IRequestHandler<DeleteApiCommand, bool>,
     IRequestHandler<UpdateApiCommand, bool>,
-    IRequestHandler<UpdateApiScopeCommand, bool>
-
-
+    IRequestHandler<CreateApiScopeCommand, ApiScope>,
+    IRequestHandler<UpdateApiScopeCommand, bool>,
+    IRequestHandler<DeleteApiScopeCommand, bool>
     {
         private readonly IApiResourceRepository _repository;
         public ApiHandlers(IApiResourceRepository repository)
@@ -27,14 +26,7 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<ApiResource> Handle(CreateApiCommand message, CancellationToken cancellationToken)
         {
-            var api = new ApiResource
-            {
-                Id = Guid.NewGuid(),
-                Name = message.Name,
-                DisplayName = message.DisplayName,
-                Enabled = true
-            };
-
+            var api = await ApiResource.Factory.CreateNewEntry(_repository, message.Name, message.DisplayName);
             await _repository.Add(api);
             return api;
         }
@@ -43,14 +35,17 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<bool> Handle(UpdateApiCommand message, CancellationToken cancellationToken)
         {
-            var api = await _repository.GetById(message.Id);
+            var api = await _repository.GetById(message.Id) ?? throw new KeyNotFoundException();
+            api.UpdateInfos(message.DisplayName, message.Description, message.UserClaims);
 
-            api.Name = message.Name;
-            api.Enabled = message.Enabled;
-            api.DisplayName = message.DisplayName;
-            api.Description = message.Description;
-            api.UserClaims = message.UserClaims;
-
+            if (message.Enabled)
+            {
+                api.Enable();
+            }
+            else
+            {
+                api.Disable();
+            }
             await _repository.SaveAsync(api);
             return true;
         }
@@ -68,28 +63,15 @@ namespace LagencyUser.Application.CommandHandlers
         public async Task<ApiScope> Handle(CreateApiScopeCommand message, CancellationToken cancellationToken)
         {
             var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
-
-            var apiScope = new ApiScope
-            {
-                Id = Guid.NewGuid(),
-                ApiResourceId = api.Id,
-                Name = message.Name,
-                DisplayName = message.Name,
-                Description = message.Description
-            };
-
-            api.Scopes.Add(apiScope);
-
+            var scope = api.AddScope(message.Name, message.Description);
             await _repository.SaveAsync(api);
-            return apiScope;
+            return scope;
         }
 
         public async Task<bool> Handle(UpdateApiScopeCommand message, CancellationToken cancellationToken)
         {
             var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
             var scope = api.Scopes.FirstOrDefault(s => s.Id == message.Id) ?? throw new KeyNotFoundException();
-            scope.Name = message.Name;
-            scope.DisplayName = message.Name;
             scope.Description = message.Description;
 
             await _repository.SaveAsync(api);
@@ -99,8 +81,8 @@ namespace LagencyUser.Application.CommandHandlers
         public async Task<bool> Handle(DeleteApiScopeCommand message, CancellationToken cancellationToken)
         {
             var api = await _repository.GetById(message.ApiResourceId) ?? throw new KeyNotFoundException();
-            var scope = api.Scopes.FirstOrDefault(s => s.Id == message.Id) ?? throw new KeyNotFoundException();
-            api.Scopes.Remove(scope);
+            api.DeleteScope(message.Id);
+
             await _repository.SaveAsync(api);
             return true;
 

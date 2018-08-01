@@ -28,37 +28,7 @@ namespace LagencyUser.Application.CommandHandlers
 
         public async Task<Client> Handle(CreateClientCommand message, CancellationToken cancellationToken)
         {
-            var client = new Client
-            {
-                Id = Guid.NewGuid(),
-                ClientName = message.ClientName,
-                ClientTypeId = message.ClientTypeId,
-                ClientId = ClientIdGenerator.Generate(32),
-                AllowedScopes = {
-                    IdentityServerConstants.StandardScopes.OpenId  
-                }
-            };
-
-
-
-            if(message.ClientTypeId == ClientType.SinglePage.Id) 
-            {
-                client.RequireConsent = false;
-                client.AllowedGrantTypes = IModels.GrantTypes.Implicit.ToList();
-                client.AccessTokenType = (int) IModels.AccessTokenType.Jwt;
-                client.AllowAccessTokensViaBrowser = true;
-                client.AlwaysIncludeUserClaimsInIdToken = true;
-            } 
-            else if (message.ClientTypeId == ClientType.MachineToMachine.Id) 
-            {
-                client.RequireConsent = false;
-                client.AllowedGrantTypes = IModels.GrantTypes.ClientCredentials.ToList();
-                client.ClientSecrets = new List<ClientSecret>  {
-                    new ClientSecret(IModels.HashExtensions.Sha256("secret"))
-                };
-                client.RequireClientSecret = true;
-            }
-
+            var client = await Client.Factory.CreateNewEntry(_repository, message.ClientName, message.ClientTypeId);
             await _repository.Add(client);
             return client;
         }
@@ -69,21 +39,30 @@ namespace LagencyUser.Application.CommandHandlers
 
             message.AllowedScopes = message.AllowedScopes ?? new List<string>();
 
-            //message.AllowedScopes.Add(IdentityServerConstants.StandardScopes.OpenId);
+            await client.UpdateSettings(
+                 _repository,
+                 message.ClientName,
+                 message.Description,
+                 message.ClientUri,
+                 message.LogoUri,
+                 message.RequireClientSecret,
+                 message.RequireConsent,
+                 message.AlwaysIncludeUserClaimsInIdToken,
+                 message.AllowAccessTokensViaBrowser,
+                 message.IdentityTokenLifetime,
+                 message.RedirectUris,
+                 message.AllowedCorsOrigins,
+                 message.AllowedScopes
+             );
 
-            client.Enabled = message.Enabled;
-            client.RequireClientSecret = message.RequireClientSecret;
-            client.ClientName = message.ClientName;
-            client.Description = message.Description;
-            client.ClientUri = message.ClientUri;
-            client.LogoUri = message.LogoUri;
-            client.RequireConsent = message.RequireConsent;
-            client.AlwaysIncludeUserClaimsInIdToken = message.AlwaysIncludeUserClaimsInIdToken;
-            client.AllowAccessTokensViaBrowser = message.AllowAccessTokensViaBrowser;
-            client.RedirectUris = message.RedirectUris;
-            client.AllowedScopes = message.AllowedScopes;
-            client.AllowedCorsOrigins = message.AllowedCorsOrigins;
-            client.IdentityTokenLifetime = message.IdentityTokenLifetime;
+            if (message.Enabled)
+            {
+                client.Enable();
+            }
+            else
+            {
+                client.Disable();
+            }
           
             await _repository.SaveAsync(client);
             return true;

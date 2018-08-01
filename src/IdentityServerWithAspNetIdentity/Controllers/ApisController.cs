@@ -55,8 +55,16 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> GetApis(string name, string displayName, bool? enabled)
         {
-            var apis = await _apiQueries.GetApisAsync(name, displayName, enabled);
-            return Ok(apis); 
+            try
+            {
+                var apis = await _apiQueries.GetApisAsync(name, displayName, enabled);
+                return Ok(apis); 
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
+          
         }
 
 
@@ -65,8 +73,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Post([FromBody]CreateApiCommand command)
         {
-            var apiResource = await _mediator.Send(command);
-            return Ok(apiResource);
+            try
+            {
+                var apiResource = await _mediator.Send(command);
+                return Ok(apiResource);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
 
@@ -75,8 +94,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Put([FromBody]UpdateApiCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -84,8 +114,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> Delete(DeleteApiCommand command)
         {
-            var client = await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
 
@@ -96,8 +137,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> GetApiScopes(Guid apiResourceId)
         {
-            var scopes = await _apiQueries.GetApiScopesAsync(apiResourceId);
-            return Ok(scopes);
+            try
+            {
+                var scopes = await _apiQueries.GetApiScopesAsync(apiResourceId);
+                return Ok(scopes);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
 
@@ -106,8 +158,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> PostApiScope([FromBody]CreateApiScopeCommand command)
         {
-            var apiResource = await _mediator.Send(command);
-            return Ok(apiResource);
+            try
+            {
+                var apiResource = await _mediator.Send(command);
+                return Ok(apiResource);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
 
@@ -116,8 +179,19 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> PutApiScope([FromBody]UpdateApiScopeCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
         }
 
         [HttpDelete("{apiResourceId}/scopes/{id}", Name = "DeleteApiScope")]
@@ -125,8 +199,20 @@ namespace IdentityServerWithAspNetIdentity.Controllers
         [ProducesResponseType(typeof(void), 400)]
         public async Task<IActionResult> DeleteApiScope(DeleteApiScopeCommand command)
         {
-            var client = await _mediator.Send(command);
-            return Ok();
+            try
+            {
+                var client = await _mediator.Send(command);
+                return Ok();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound();
+            }
+            catch (ArgumentException argumentException)
+            {
+                return BadRequest(argumentException.Message);
+            }
+
         }
     }
 }

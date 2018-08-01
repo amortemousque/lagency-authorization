@@ -2,11 +2,17 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityServer4;
 using IdentityServer4.Models;
+using LagencyUser.Application.Contracts;
+using LagencyUser.Application.Service;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using static IdentityServer4.IdentityServerConstants;
+using IModels = IdentityServer4.Models;
+using System.Linq;
 
 namespace LagencyUser.Application.Model
 {
@@ -77,5 +83,104 @@ namespace LagencyUser.Application.Model
 
 
         public int ClientTypeId { get; set; }
+
+
+        public async Task UpdateSettings(
+            IClientRepository repository,
+            string clientName,
+            string description,
+            string clientUri,
+            string logoUri,
+            bool requireClientSecret,
+            bool requireConsent,
+            bool alwaysIncludeUserClaimsInIdToken,
+            bool allowAccessTokensViaBrowser,
+            int identityTokenLifetime,
+            List<string> redirectUris,
+            List<string> allowedCorsOrigins,
+            List<string> allowedScopes
+        ) {
+            
+
+            if (!await repository.HasUniqName(clientName, Id))
+                throw new ArgumentException("An other tenant has the same name.", nameof(clientName));
+
+
+            RequireClientSecret = requireClientSecret;
+            ClientName = clientName;
+            Description = description;
+            ClientUri = clientUri;
+            LogoUri = logoUri;
+            RequireConsent = requireConsent;
+            AlwaysIncludeUserClaimsInIdToken = alwaysIncludeUserClaimsInIdToken;
+            AllowAccessTokensViaBrowser = allowAccessTokensViaBrowser;
+            RedirectUris = redirectUris;
+            AllowedScopes = allowedScopes;
+            AllowedCorsOrigins = allowedCorsOrigins;
+            IdentityTokenLifetime = identityTokenLifetime;
+        }
+
+
+        public void Disable()
+        {
+            Enabled = false;
+        }
+
+        public void Enable()
+        {
+            Enabled = true;
+        }
+
+
+        public static class Factory
+        {
+            public static async Task<Client> CreateNewEntry(
+                IClientRepository repository,
+                string clientName,
+                int clientTypeId
+            )
+            {
+
+                if (string.IsNullOrWhiteSpace(clientName))
+                    throw new ArgumentException("The ClientName must be specified", nameof(clientName));
+
+
+                if (!await repository.HasUniqName(clientName))
+                    throw new ArgumentException("An other tenant has the same name.", nameof(clientName));
+
+
+                var client = new Client
+                {
+                    Id = Guid.NewGuid(),
+                    ClientName = clientName,
+                    ClientTypeId = clientTypeId,
+                    ClientId = ClientIdGenerator.Generate(32),
+                    AllowedScopes = {
+                        IdentityServerConstants.StandardScopes.OpenId
+                    }
+                };
+
+
+                if (clientTypeId == ClientType.SinglePage.Id)
+                {
+                    client.RequireConsent = false;
+                    client.AllowedGrantTypes = IModels.GrantTypes.Implicit.ToList();
+                    client.AccessTokenType = (int)IModels.AccessTokenType.Jwt;
+                    client.AllowAccessTokensViaBrowser = true;
+                    client.AlwaysIncludeUserClaimsInIdToken = true;
+                }
+                else if (clientTypeId == ClientType.MachineToMachine.Id)
+                {
+                    client.RequireConsent = false;
+                    client.AllowedGrantTypes = IModels.GrantTypes.ClientCredentials.ToList();
+                    client.ClientSecrets = new List<ClientSecret>  {
+                        new ClientSecret(IModels.HashExtensions.Sha256("secret"))
+                    };
+                    client.RequireClientSecret = true;
+                }
+
+                return client;
+            }
+        }
     }
 }
