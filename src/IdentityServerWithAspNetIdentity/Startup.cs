@@ -25,6 +25,8 @@ using System.Reflection;
 using LagencyUser.Application.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using LagencyUser.Infrastructure.Context;
+using Model = LagencyUser.Application.Model;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -41,6 +43,13 @@ namespace IdentityServerWithAspNetIdentity
 
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddScoped<SignInManager<Model.IdentityUser>, CustomSignInManager>();
+
+            //Application - Db Context
+            var context = new ApplicationDbContext(Configuration.GetConnectionString("DefaultConnection"));
+            services.AddScoped<ApplicationDbContext>(cw => context);
+
 
             // Application - Repositories
             services.AddScoped<IApiResourceRepository, ApiResourceRepository>();
@@ -48,6 +57,7 @@ namespace IdentityServerWithAspNetIdentity
             services.AddScoped<IIdentityResourceRepository, IdentityResourceRepository>();
             services.AddScoped<IPersistedGrandRepository, PersistedGrantRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             // Application - Commands
             services.AddMediatR(typeof(ApiHandlers).GetTypeInfo().Assembly);
@@ -57,13 +67,13 @@ namespace IdentityServerWithAspNetIdentity
             services.AddScoped<ApiQueries, ApiQueries>();
             services.AddScoped<ClientQueries, ClientQueries>();
             services.AddScoped<TenantQueries, TenantQueries>();
+            services.AddScoped<UserQueries, UserQueries>();
 
             //Custom extension for mongo implementation
             //services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddIdentityWithMongoStoresUsingCustomTypes<ApplicationUser, ApplicationRole>(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, UserClaimsPrincipalFactory<ApplicationUser>>();
-            services.AddScoped<UserManager<ApplicationUser>, UserManager<ApplicationUser>>();
-
+            services.AddIdentityWithMongoStoresUsingCustomTypes<LagencyUser.Application.Model.IdentityUser, LagencyUser.Application.Model.IdentityRole>(context);
+            services.AddScoped<IUserClaimsPrincipalFactory<LagencyUser.Application.Model.IdentityUser>, UserClaimsPrincipalFactory<LagencyUser.Application.Model.IdentityUser>>();
+            services.AddScoped<UserManager<LagencyUser.Application.Model.IdentityUser>, UserManager<LagencyUser.Application.Model.IdentityUser>>();
 
 
             // Add application services.
@@ -90,13 +100,13 @@ namespace IdentityServerWithAspNetIdentity
                 options.Events.RaiseErrorEvents = true;
             })
             //Custom extension for mongo implementation       
-            .AddMongoDbConfigurationStore(Configuration.GetConnectionString("DefaultConnection"))
+            .AddMongoDbConfigurationStore()
             .AddDeveloperSigningCredential()
             .AddExtensionGrantValidator<LagencyUser.Infrastructure.Identity.Extensions.ExtensionGrantValidator>()
             .AddExtensionGrantValidator<LagencyUser.Infrastructure.Identity.Extensions.NoSubjectExtensionGrantValidator>()
             .AddJwtBearerClientAuthentication()
             .AddAppAuthRedirectUriValidator()
-            .AddAspNetIdentity<ApplicationUser>();
+            .AddAspNetIdentity<LagencyUser.Application.Model.IdentityUser>();
 
             services.AddExternalIdentityProviders();
 

@@ -9,8 +9,11 @@ namespace LagencyUser.Application.Model
 {
     public class ApiScope
     {
+        // custom fields
         public Guid Id { get; set; }
         public Guid ApiResourceId { get; set; }
+
+        // standard fields
         public string Name { get; set; }
         public string DisplayName { get; set; }
         public string Description { get; set; }

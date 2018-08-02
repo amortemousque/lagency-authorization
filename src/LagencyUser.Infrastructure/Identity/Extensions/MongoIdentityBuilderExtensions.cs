@@ -4,6 +4,7 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
 {
     using System;
     using LagencyUser.Application.Model;
+    using LagencyUser.Infrastructure.Context;
     using LagencyUser.Infrastructure.Identity.Stores;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
@@ -17,20 +18,13 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="connectionString">Must contain the database name</param>
-        public static IdentityBuilder RegisterMongoStores<TUser, TRole>(this IdentityBuilder builder, string connectionString)
+        public static IdentityBuilder RegisterMongoStores<TUser, TRole>(this IdentityBuilder builder, ApplicationDbContext context)
             where TRole : IdentityRole
             where TUser : IdentityUser
         {
-            var url = new MongoUrl(connectionString);
-            var client = new MongoClient(url);
-            if (url.DatabaseName == null)
-            {
-                throw new ArgumentException("Your connection string must contain a database name", connectionString);
-            }
-            var database = client.GetDatabase(url.DatabaseName);
             return builder.RegisterMongoStores(
-                p => database.GetCollection<TUser>("Users"),
-                p => database.GetCollection<TRole>("Roles"));
+                p => context.Users,
+                p => context.Roles);
         }
 
         /// <summary>
@@ -72,9 +66,9 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
         /// </summary>
         /// <param name="services"></param>
         /// <param name="connectionString">Connection string must contain the database name</param>
-        public static IdentityBuilder AddIdentityWithMongoStores(this IServiceCollection services, string connectionString)
+        public static IdentityBuilder AddIdentityWithMongoStores(this IServiceCollection services, ApplicationDbContext context)
         {
-            return services.AddIdentityWithMongoStoresUsingCustomTypes<IdentityUser, IdentityRole>(connectionString);
+            return services.AddIdentityWithMongoStoresUsingCustomTypes<IdentityUser, IdentityRole>(context);
         }
 
         /// <summary>
@@ -85,12 +79,12 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
         /// <typeparam name="TRole"></typeparam>
         /// <param name="services"></param>
         /// <param name="connectionString">Connection string must contain the database name</param>
-        public static IdentityBuilder AddIdentityWithMongoStoresUsingCustomTypes<TUser, TRole>(this IServiceCollection services, string connectionString)
+        public static IdentityBuilder AddIdentityWithMongoStoresUsingCustomTypes<TUser, TRole>(this IServiceCollection services, ApplicationDbContext context)
             where TUser : IdentityUser
             where TRole : IdentityRole
         {
             return services.AddIdentity<TUser, TRole>()
-                .RegisterMongoStores<TUser, TRole>(connectionString)
+                .RegisterMongoStores<TUser, TRole>(context)
                 .AddDefaultTokenProviders();
 
         }

@@ -48,6 +48,7 @@
     <Compile Remove="Data\ApplicationDbContext.cs" />
     <Compile Remove="Services\ApiService.cs" />
     <Compile Remove="Config.cs" />
+    <Compile Remove="Models\ApplicationRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Infrastructure\LagencyUser.Infrastructure.csproj" />

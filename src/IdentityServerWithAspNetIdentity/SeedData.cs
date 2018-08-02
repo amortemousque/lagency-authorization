@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using LagencyUserInfrastructure.IdentityServer4.Mappers;
 using LagencyUser.Infrastructure.Context;
+using Model = LagencyUser.Application.Model;
 
 namespace IdentityServerWithAspNetIdentity
 {
@@ -23,11 +24,11 @@ namespace IdentityServerWithAspNetIdentity
         {
             using (var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<Model.IdentityUser>>();
                 var alice = userMgr.FindByNameAsync("AliceSmith@email.com").Result;
                 if (alice == null)
                 {
-                    alice = new ApplicationUser
+                    alice = new Model.IdentityUser
                     {
                         UserName = "AliceSmith@email.com",
                         Email = "AliceSmith@email.com"
@@ -65,7 +66,7 @@ namespace IdentityServerWithAspNetIdentity
                 var bob = userMgr.FindByNameAsync("BobSmith@email.com").Result;
                 if (bob == null)
                 {
-                    bob = new ApplicationUser
+                    bob = new Model.IdentityUser
                     {
                         UserName = "BobSmith@email.com",
                         Email = "BobSmith@email.com"

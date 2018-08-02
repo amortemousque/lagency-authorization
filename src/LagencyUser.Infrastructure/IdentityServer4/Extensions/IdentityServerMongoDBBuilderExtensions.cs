@@ -17,11 +17,9 @@ namespace LagencyUser.Infrastructure.IdentityServer4.Extensions
     public static class IdentityServerMongoDBBuilderExtensions
     {
         public static IIdentityServerBuilder AddMongoDbConfigurationStore(
-            this IIdentityServerBuilder builder, string connectionString)
+            this IIdentityServerBuilder builder)
         {
             
-            builder.Services.AddScoped<ApplicationDbContext>(cw => new ApplicationDbContext(connectionString));
-
             builder.Services.AddTransient<IClientStore, ClientStore>();
             builder.Services.AddTransient<IResourceStore, ResourceStore>();
             builder.Services.AddTransient<ICorsPolicyService, CorsPolicyService>();

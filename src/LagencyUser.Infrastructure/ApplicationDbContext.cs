@@ -61,6 +61,24 @@ namespace LagencyUser.Infrastructure.Context
         }
 
 
+        public IMongoCollection<IdentityUser> Users
+        {
+            get
+            {
+                return _database.GetCollection<IdentityUser>("Users");
+            }
+        }
+
+
+        public IMongoCollection<IdentityRole> Roles
+        {
+            get
+            {
+                return _database.GetCollection<IdentityRole>("Roles");
+            }
+        }
+
+
 
         public ApplicationDbContext(string connectionString)
         {

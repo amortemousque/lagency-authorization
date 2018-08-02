@@ -19,6 +19,31 @@
 			Tokens = new List<IdentityUserToken>();
 		}
 
+
+        // custom fields
+        [PersonalData]
+        public string Tenant { get; set; } // Tenant name of the user
+
+        [PersonalData]
+        public string GivenName { get; set; }
+
+        [PersonalData]
+        public string FamilyName { get; set; }
+
+        [PersonalData]
+        public string FullName { get { return this.GivenName ?? "" + " " + this.FamilyName ?? ""; } }
+
+        [PersonalData]
+        public string NormalizedFullName { get { return this.FullName.ToUpper(); } }
+
+        [PersonalData]
+        public virtual DateTime? LastLoginDate { get; set; }
+
+        [PersonalData]
+        public virtual DateTime? RegistrationDate { get; set; }
+
+
+        //standard fields
 		[BsonId]
 		public virtual string Id { get; set; }
 
