@@ -22,7 +22,7 @@
 
         // custom fields
         [PersonalData]
-        public string Tenant { get; set; } // Tenant name of the user
+        public Guid TenantId { get; set; } // Tenant name of the user
 
         [PersonalData]
         public string GivenName { get; set; }
@@ -31,10 +31,10 @@
         public string FamilyName { get; set; }
 
         [PersonalData]
-        public string FullName { get { return this.GivenName ?? "" + " " + this.FamilyName ?? ""; } }
+        public string FullName { get; set; }
 
         [PersonalData]
-        public string NormalizedFullName { get { return this.FullName.ToUpper(); } }
+        public string NormalizedFullName { get; set; }
 
         [PersonalData]
         public virtual DateTime? LastLoginDate { get; set; }

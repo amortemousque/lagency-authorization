@@ -83,7 +83,10 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
             where TUser : IdentityUser
             where TRole : IdentityRole
         {
-            return services.AddIdentity<TUser, TRole>()
+            return services.AddIdentity<TUser, TRole>(options => {
+                    // For multi tenant
+                    options.User.RequireUniqueEmail = false;
+                })
                 .RegisterMongoStores<TUser, TRole>(context)
                 .AddDefaultTokenProviders();
 

@@ -65,6 +65,7 @@ namespace LagencyUser.Application.CommandHandlers
             }
           
             await _repository.SaveAsync(client);
+
             return true;
         }
 

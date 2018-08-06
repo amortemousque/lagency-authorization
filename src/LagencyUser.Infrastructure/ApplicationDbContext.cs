@@ -78,6 +78,14 @@ namespace LagencyUser.Infrastructure.Context
             }
         }
 
+        public IMongoCollection<Permission> Permissions
+        {
+            get
+            {
+                return _database.GetCollection<Permission>("Permissions");
+            }
+        }
+
 
 
         public ApplicationDbContext(string connectionString)

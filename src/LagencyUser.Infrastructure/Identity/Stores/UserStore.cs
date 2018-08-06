@@ -50,12 +50,16 @@ namespace LagencyUser.Infrastructure.Identity.Stores
 
 		public virtual async Task<IdentityResult> CreateAsync(TUser user, CancellationToken token)
 		{
+            user.FullName = user.GivenName + " " + user.FamilyName;
+            user.NormalizedFullName = user.FullName.ToUpper(); 
 			await _Users.InsertOneAsync(user, cancellationToken: token);
 			return IdentityResult.Success;
 		}
 
 		public virtual async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken token)
 		{
+            user.FullName = user.GivenName + " " + user.FamilyName;
+            user.NormalizedFullName = user.FullName.ToUpper(); 
 			// todo should add an optimistic concurrency check
 			await _Users.ReplaceOneAsync(u => u.Id == user.Id, user, cancellationToken: token);
 			// todo success based on replace result

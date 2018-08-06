@@ -58,6 +58,7 @@ namespace IdentityServerWithAspNetIdentity
             services.AddScoped<IPersistedGrandRepository, PersistedGrantRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
 
             // Application - Commands
             services.AddMediatR(typeof(ApiHandlers).GetTypeInfo().Assembly);
@@ -68,6 +69,7 @@ namespace IdentityServerWithAspNetIdentity
             services.AddScoped<ClientQueries, ClientQueries>();
             services.AddScoped<TenantQueries, TenantQueries>();
             services.AddScoped<UserQueries, UserQueries>();
+            services.AddScoped<RoleQueries, RoleQueries>();
 
             //Custom extension for mongo implementation
             //services.AddIdentityWithMongoStores(Configuration.GetConnectionString("DefaultConnection"));

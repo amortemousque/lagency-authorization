@@ -43,7 +43,6 @@ namespace IdentityServerWithAspNetIdentity
                         new Claim(JwtClaimTypes.Id, "Alice Smith"),
                         new Claim(JwtClaimTypes.Role, "" ),
                         new Claim(JwtClaimTypes.Scope, "Alice Smith"),
-
                         new Claim(JwtClaimTypes.Name, "Alice Smith"),
                         new Claim(JwtClaimTypes.GivenName, "Alice"),
                         new Claim(JwtClaimTypes.FamilyName, "Smith"),

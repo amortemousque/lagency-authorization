@@ -1,10 +1,12 @@
 ﻿namespace LagencyUser.Application.Model
 {
     using System;
+    using System.Collections.Generic;
     using global::MongoDB.Bson;
 	using global::MongoDB.Bson.Serialization.Attributes;
+    using Microsoft.AspNetCore.Identity;
 
-	public class IdentityRole
+    public class IdentityRole
 	{
 		public IdentityRole()
 		{
@@ -16,6 +18,14 @@
 			Name = roleName;
 			NormalizedName = Name.ToUpper();
 		}
+
+
+        [BsonIgnoreIfNull]
+        [PersonalData]
+        public virtual List<string> Permissions { get; set; }
+
+        [PersonalData]
+        public string Description { get; set; }
 
 		[BsonId]
 		public string Id { get; set; }
