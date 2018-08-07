@@ -148,14 +148,13 @@ namespace LagencyUser.Application.Model
                 if (!await repository.HasUniqName(clientName))
                     throw new ArgumentException("An other tenant has the same name.", nameof(clientName));
 
-
                 var client = new Client
                 {
                     Id = Guid.NewGuid(),
                     ClientName = clientName,
                     ClientTypeId = clientTypeId,
                     ClientId = ClientIdGenerator.Generate(32),
-                    AllowedScopes = {
+                    AllowedScopes = new List<string> {
                         IdentityServerConstants.StandardScopes.OpenId
                     }
                 };
