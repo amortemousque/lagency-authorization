@@ -49,6 +49,7 @@ namespace LagencyUser.Application.Model
 
         public ApiScope AddScope(string name, string description) 
         {
+            this.Scopes = this.Scopes ?? new List<ApiScope>();
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("The name must be specified", nameof(name));
             
