@@ -6,85 +6,127 @@
 @{
     ViewData["Title"] = "Log in";
 }
-<h2>@ViewData["Title"].</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Email" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+
+
+    <div class="mdc-card text-center main-card">
+        <div class="mdc-typography--headline5 text-uppercase">Login to your account </div>
+        <section class="card-content">
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+
+                @*<div asp-validation-summary="All" class="text-danger"></div>*@
+                @*<input asp-for="Email" class="form-control" />*@
+                <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+                    <div class="mdc-text-field  mdc-text-field--fullwidth">
+                        <input asp-for="Email" type="text" class="mdc-text-field__input">
+                        <label asp-for="Email" class="mdc-floating-label">Email</label>
+                        <div class="mdc-line-ripple"></div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="mat-form-field-subscript-wrapper">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <br />
+                <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+                    <div class="mdc-text-field  mdc-text-field--fullwidth">
+                        <input asp-for="Password" type="text" class="mdc-text-field__input">
+                        <label asp-for="Password" class="mdc-floating-label">Password</label>
+                        <div class="mdc-line-ripple"></div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
+
+                <div class="mat-form-field-subscript-wrapper">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+
+                @*<div class="mt-3">
+            <div class="checkbox">
+                <label asp-for="RememberMe">
+                    <input asp-for="RememberMe" />
+                </label>
+            </div>
+        </div>*@
+
+
+
+            <div class="d-flex align-items-center">
+                <div class="mdc-form-field" style="width:auto">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               asp-for="RememberMe"
+                               class="mdc-checkbox__native-control"
+                               id="checkbox-1" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
                         </div>
                     </div>
+                    <label for="checkbox-1">
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" name="button" class="btn btn-default" value="login">Log in</button>
-                    </div>
+                <div class="ml-auto">
+                    <a asp-action="ForgotPassword" class="link">Forgot your password?</a>
+
                 </div>
-                <p>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a>
-                </p>
-                <p>
-                    <a asp-action="ForgotPassword">Forgot your password?</a>
-                </p>
+        </div>
+
+           
+
+
+
+
+                <div class="mt-3">
+                    <button type="submit" name="button" class="mdc-button  mdc-button--raised" value="login">Log in</button>
+                </div>
             </form>
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section>
-            <h4>Use another service to log in.</h4>
-            <hr />
+
+
+            <div  class="separator"><span class="text">OR</span></div>
+
+
             @{
-                var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
-                var loginProviders = schemes.ToList();
-                if (loginProviders.Count == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                        <div>
-                            <p>
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.Name</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
+            var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+            var loginProviders = schemes.ToList();
+            if (loginProviders.Count == 0)
+            {
+            <div>
+                <p>
+                    There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                    for details on setting up this ASP.NET application to support logging in via external services.
+                </p>
+            </div>
+            }
+            else
+            {
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                <div>
+                    <p>
+                        @foreach (var provider in loginProviders)
+                        {
+                        <button type="submit" class="mdc-button  mdc-button--raised button-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.DisplayName</button>
+                        }
+                    </p>
+                </div>
+            </form>
+            }
             }
         </section>
+
+        <p>
+            <a asp-action="Register" class="link" asp-route-returnurl="@ViewData[" ReturnUrl"]">Register as a new user?</a>
+        </p>
+    
     </div>
-</div>
+
+@*<h2>@ViewData["Title"].</h2>*@
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
