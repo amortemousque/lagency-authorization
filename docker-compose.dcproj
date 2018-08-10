@@ -3,10 +3,10 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>{0588E894-0F7A-470B-9F13-F8992E59AD5C}</ProjectGuid>
+    <ProjectGuid>{ACEDB5BD-4EE8-46A2-9A44-6EDB8086B81F}</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
     <DockerServiceUrl>http://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>identityserverwithaspnetidentity</DockerServiceName>
+    <DockerServiceName>lagencyuser.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

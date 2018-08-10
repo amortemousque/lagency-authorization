@@ -1,11 +1,11 @@
 version: '3.4'
 
 services:
-  identityserverwithaspnetidentity:
-    image: identityserverwithaspnetidentity
+  lagencyuser.web:
+    image: lagencyuser
     build:
       context: .
-      dockerfile: src/IdentityServerWithAspNetIdentity/Dockerfile
+      dockerfile: src/LagencyUser.Web/Dockerfile
     ports: 
       - "5011:5011"
     networks:
@@ -15,8 +15,3 @@ networks:
   quarksupone:
     external:
       name: quarksupone
-
-
-
-
-

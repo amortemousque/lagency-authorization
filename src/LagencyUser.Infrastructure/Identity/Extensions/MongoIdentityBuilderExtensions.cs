@@ -86,6 +86,8 @@ namespace LagencyUser.Infrastructure.Identity.Extensions
             return services.AddIdentity<TUser, TRole>(options => {
                     // For multi tenant
                     options.User.RequireUniqueEmail = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
                 })
                 .RegisterMongoStores<TUser, TRole>(context)
                 .AddDefaultTokenProviders();

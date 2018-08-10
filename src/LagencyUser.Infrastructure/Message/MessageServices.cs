@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityServerWithAspNetIdentity.Services;
+using LagencyUser.Web.Services;
 
 namespace LagencyUser.Infrastructure.IdentityServer4.Message
 {
