@@ -16,6 +16,8 @@
     <Folder Include="Repositories\" />
     <Folder Include="IdentityServer4\Models\" />
     <Folder Include="IdentityServer4\Mappers\" />
+    <Folder Include="Bus\" />
+    <Folder Include="Bus\Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
@@ -23,11 +25,16 @@
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Rebus.ServiceProvider" Version="4.0.1" />
+    <PackageReference Include="Rebus.RabbitMQ" Version="4.4.2" />
+    <PackageReference Include="Rebus" Version="5.0.0-b15" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Application\LagencyUser.Application.csproj" />
+    <ProjectReference Include="..\IntegrationMessages\IntegrationMessages.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IdentityServer4\CustomClaimClaimTypes.cs" />
+    <Compile Remove="Message\SendEmail.cs" />
   </ItemGroup>
 </Project>

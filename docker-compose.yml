@@ -8,6 +8,9 @@ services:
       dockerfile: src/LagencyUser.Web/Dockerfile
     ports: 
       - "5011:5011"
+    environment:
+      - RABBIT_MQ_URL=amqp://mbqxzlgv:RUhVWZbSIFp1raEi96X8zebWpcIJTh5Q@wasp.rmq.cloudamqp.com/mbqxzlgv
+      - RABBIT_MQ_QUEUE_NAME=quarksupone
     networks:
       - quarksupone
  
