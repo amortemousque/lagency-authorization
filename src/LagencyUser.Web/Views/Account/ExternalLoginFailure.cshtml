@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using LagencyUser.Web.Resources
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+<header>
+    <h2>@Localizer["Login Failure"]</h2>
+    <p class="text-danger">@Localizer["Unsuccessful login with service."]</p>
+</header>

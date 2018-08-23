@@ -1,0 +1,113 @@
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Mvc.Localization
+@using LagencyUser.Web.Resources
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+@model LoginViewModel
+@inject SignInManager<LagencyUser.Application.Model.IdentityUser> SignInManager
+@{
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+<div class="mdc-typography--headline6 text-uppercase">@Localizer["Login to your account"]</div>
+<section class="card-content">
+    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+            <div class="mdc-text-field">
+                <input asp-for="Email" type="text" class="mdc-text-field__input">
+                <label asp-for="Email" class="mdc-floating-label">@Localizer["Email"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+        </div>
+
+        <div class="mat-form-field-subscript-wrapper">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+            <div class="mdc-text-field">
+                <input asp-for="Password" type="password" class="mdc-text-field__input">
+                <label asp-for="Password" class="mdc-floating-label">@Localizer["Password"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+        </div>
+
+        <div class="mat-form-field-subscript-wrapper">
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex align-items-center mt-4">
+            <div class="mdc-form-field" style="width:auto">
+                <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           asp-for="RememberMe"
+                           class="mdc-checkbox__native-control"
+                           id="checkbox-1" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="checkbox-1">
+                    @Html.DisplayNameFor(m => m.RememberMe)
+                </label>
+            </div>
+            <div class="ml-auto">
+                <a asp-action="ForgotPassword" class="link">@Localizer["Forgot your password?"]</a>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" name="button" class="mdc-button mdc-button--raised" value="login">Log in</button>
+        </div>
+    </form>
+
+    <div class="separator"><span class="text">OR</span></div>
+
+    @{
+        var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
+        var loginProviders = schemes.ToList();
+        if (loginProviders.Count == 0)
+        {
+            <div>
+                <p>
+                    There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                    for details on setting up this ASP.NET application to support logging in via external services.
+                </p>
+            </div>
+        }
+        else
+        {
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+                <div>
+                    <p>
+                        @foreach (var provider in loginProviders)
+                        {
+                            <button type="submit" class="mdc-button  mdc-button--raised button-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.DisplayName</button>
+                        }
+                    </p>
+                </div>
+            </form>
+        }
+    }
+</section>
+
+<p>
+    <a asp-action="Register" class="link" asp-route-returnurl="@ViewData[" ReturnUrl"]">@Localizer["Create new account"]</a>
+</p>
+
+
+@*<h2>@ViewData["Title"].</h2>*@
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

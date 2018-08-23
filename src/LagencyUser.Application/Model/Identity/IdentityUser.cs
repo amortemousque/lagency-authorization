@@ -106,7 +106,7 @@
 
 		public virtual bool HasPassword()
 		{
-			return false;
+            return !string.IsNullOrWhiteSpace(this.PasswordHash);
 		}
 
 		[BsonIgnoreIfNull]

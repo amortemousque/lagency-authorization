@@ -1,0 +1,123 @@
+﻿@model IndexViewModel
+@{
+    ViewData["Title"] = "Manage your account";
+}
+@if (ViewData["StatusMessage"] != ""){
+    <div class="mdc-card main-card success-message">
+        @ViewData["StatusMessage"]
+    </div>
+}
+
+<h2 class="mdc-typography--headline4 mb-3">Personal informations</h2>
+<div class="management-block d-flex flex-column flex-md-row align-items-stretch">
+    <div class="management-info">
+        Managing general information, such as your name, e-mail address, and phone number, allows others to find on various QuarksupOne products in contact with you.
+    </div>
+    <div class="management-content">
+        <div class="mdc-card text-center main-card p-0">
+            <div class="app-dataview dataview-list">
+                <div class="dataview-row">
+                    <div class="content-label">
+                        <h3>Name</h3>
+                    </div>
+                    <div class="dataview-info">
+                        @Model.Name
+                    </div>
+                </div>
+                <div class="dataview-row">
+                    <div class="content-label">
+                        <h3>Email address</h3>
+                    </div>
+                    <div class="dataview-info">
+                        @Model.Email
+                    </div>
+                </div>
+                <div class="dataview-row">
+                    <div class="content-label">
+                        <h3>Password</h3>
+                    </div>
+
+                    <div class="dataview-info">
+                        @if (Model.HasPassword)
+                        {
+                            <text><a asp-controller="Manage" asp-action="ChangePassword" class="mdc-button">Change</a></text>
+                        }
+                        else
+                        {
+                            <text><a asp-controller="Manage" asp-action="SetPassword" class="mdc-button">Create</a></text>
+                        }
+                    </div>
+                </div>
+                <div class="dataview-row">
+                    <div class="content-label">
+                        <h3>Phone</h3>
+                    </div>
+                    <div class="dataview-info">
+                        @Model.Phone
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2 class="mdc-typography--headline4">Manage login services</h2>
+
+<div class="management-block  d-flex flex-column flex-md-row align-items-stretch">
+    <div class="management-info">
+        Logins capability allow you to login into the application with your socials account like LinkedIn, Google or Facebook.
+    </div>
+    <div class="management-content">
+
+        <div class="mdc-card text-center main-card p-0">
+            <div class="app-dataview dataview-list">
+                @for (var index = 0; index < Model.ManageLoginsModel.CurrentLogins.Count; index++)
+                {
+                <div class="dataview-row">
+                    <div class="content-label">
+                        <h3>@Model.ManageLoginsModel.CurrentLogins[index].LoginProvider</h3>
+                    </div>
+                    <div class="dataview-info">
+                        @if (Model.ManageLoginsModel.CurrentLogins.Count > 0)
+                        {
+                            @if ((bool)ViewData["ShowRemoveButton"])
+                            {
+                                <form asp-controller="Manage" asp-action="RemoveLogin" method="post" class="form-horizontal" role="form">
+                                    <div>
+                                        <input asp-for="@Model.ManageLoginsModel.CurrentLogins[index].LoginProvider" name="LoginProvider" type="hidden" />
+                                        <input asp-for="@Model.ManageLoginsModel.CurrentLogins[index].ProviderKey" name="ProviderKey" type="hidden" />
+                                        <input type="submit" class="mdc-button" value="Remove" title="Remove this @Model.ManageLoginsModel.CurrentLogins[index].LoginProvider login from your account" />
+                                    </div>
+                                </form>
+                            }
+                            else
+                            {
+                                @: &nbsp;
+                            }
+                        }
+                    </div>
+                </div>
+                }
+               
+                @if (Model.ManageLoginsModel.OtherLogins.Count > 0)
+                {
+                 <div class="dataview-row">
+                    @*<p class="mdc-typography--headline4">Add another service to log in.</p>*@
+                    <form asp-controller="Manage" asp-action="LinkLogin" method="post" class="form-horizontal" role="form">
+                        <div id="socialLoginList">
+                            <p>
+                                @foreach (var provider in Model.ManageLoginsModel.OtherLogins)
+                                {
+                                <button type="submit" class="mdc-button  mdc-button--raised button-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">Add @provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+                 </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
