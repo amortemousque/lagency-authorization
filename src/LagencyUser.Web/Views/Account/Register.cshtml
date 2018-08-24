@@ -11,6 +11,30 @@
     <div class="mdc-typography--headline6 text-uppercase">@Localizer["Create a new account"]</div>
     <section class="card-content">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+        <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+            <div class="mdc-text-field  ">
+                <input asp-for="GivenName" type="text" class="mdc-text-field__input">
+                <label asp-for="GivenName" class="mdc-floating-label">@Localizer["Given name"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+        </div>
+        <div class="mat-form-field-subscript-wrapper">
+            <span asp-validation-for="GivenName" class="text-danger"></span>
+        </div>
+
+        <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
+            <div class="mdc-text-field  ">
+                <input asp-for="FamilyName" type="text" class="mdc-text-field__input">
+                <label asp-for="FamilyName" class="mdc-floating-label">@Localizer["Family name"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+        </div>
+        <div class="mat-form-field-subscript-wrapper">
+            <span asp-validation-for="FamilyName" class="text-danger"></span>
+        </div>
+
         <div class="mdc-form-field" data-mdc-auto-init="MDCTextField">
             <div class="mdc-text-field  ">
                 <input asp-for="Email" type="text" class="mdc-text-field__input">

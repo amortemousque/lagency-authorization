@@ -167,7 +167,13 @@ namespace LagencyUser.Web
 
             app.UseStaticFiles();
             app.UseIdentityServer();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes => {
+                routes.MapRoute(
+                  name: "default",
+                  template: "{controller}/{action}/{id?}",
+                  defaults: new { controller = "Account", action = "Index" });  
+                }
+            );
             app.UseRebus();
             //.Run(async (context) =>
             //{

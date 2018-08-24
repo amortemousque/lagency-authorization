@@ -16,21 +16,21 @@ namespace LagencyUser.Web.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources_SharedResource {
+    internal class Resources_SharedResource_fr {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources_SharedResource() {
+        internal Resources_SharedResource_fr() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("LagencyUser.Web.Resources.Resources.SharedResource", typeof(Resources_SharedResource).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("LagencyUser.Web.Resources.Resources.SharedResource.fr", typeof(Resources_SharedResource_fr).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -44,6 +44,18 @@ namespace LagencyUser.Web.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        internal static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        internal static string Path {
+            get {
+                return ResourceManager.GetString("Path", resourceCulture);
             }
         }
         
@@ -122,6 +134,24 @@ namespace LagencyUser.Web.Resources {
         internal static string Create_new_account {
             get {
                 return ResourceManager.GetString("Create new account", resourceCulture);
+            }
+        }
+        
+        internal static string Log_in {
+            get {
+                return ResourceManager.GetString("Log in", resourceCulture);
+            }
+        }
+        
+        internal static string Family_name {
+            get {
+                return ResourceManager.GetString("Family name", resourceCulture);
+            }
+        }
+        
+        internal static string Given_name {
+            get {
+                return ResourceManager.GetString("Given name", resourceCulture);
             }
         }
         

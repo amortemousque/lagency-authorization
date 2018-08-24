@@ -22,6 +22,8 @@ using LagencyUser.Application.Model;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Localization;
 using LagencyUser.Web.Resources;
+using Microsoft.AspNetCore.Localization;
+using System.Collections.Generic;
 
 namespace LagencyUser.Web.Controllers
 {
@@ -78,6 +80,15 @@ namespace LagencyUser.Web.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewData["LogoUri"] = GetCurrentTenant().LogoUri;
+        }
+
+        //
+        // GET: /Account
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Index(string returnUrl = null)
+        {
+            return RedirectToAction(nameof(Login));
         }
 
         //
@@ -148,7 +159,7 @@ namespace LagencyUser.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -177,7 +188,7 @@ namespace LagencyUser.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(Login));
         }
 
         //
@@ -234,11 +245,29 @@ namespace LagencyUser.Web.Controllers
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
-                ViewData["ReturnUrl"] = returnUrl;
-                ViewData["LoginProvider"] = info.LoginProvider;
-                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email });
+                // if we find a user with the same email as the provider then link the user to the logins
+                var user = await _userManager.FindByEmailAsync(info.Principal.FindFirstValue(ClaimTypes.Email));
+                var userLogins = user != null ? await _userManager.GetLoginsAsync(user) : new List<UserLoginInfo>() ;
+                if (user != null && !userLogins.Any(lst => lst.LoginProvider == info.LoginProvider))
+                {
+                    var resultLogins = await _userManager.AddLoginAsync(user, info);
+                    if (resultLogins.Succeeded)
+                        return RedirectToAction(nameof(ExternalLoginCallback), new { ReturnUrl = returnUrl });
+                    else 
+                        return View("Error");
+
+                } 
+                else 
+                {
+                    // If the user does not have an account, then ask the user to create an account.
+                    ViewData["ReturnUrl"] = returnUrl;
+                    ViewData["LoginProvider"] = info.LoginProvider;
+                    var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                    var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                    var familyName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+
+                    return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = email, GivenName = givenName, FamilyName = familyName });
+                }
             }
         }
 
@@ -257,7 +286,7 @@ namespace LagencyUser.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email };
+                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -605,7 +634,7 @@ namespace LagencyUser.Web.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(ManageController.Index), "Manage");
             }
         }
 

@@ -13,6 +13,18 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
 
+
+
+    <!-- CLIENT TYPES -->
+    <data name="Profile" xml:space="preserve">
+        <value>Single page application</value>
+    </data>
+    <data name="Path" xml:space="preserve">
+        <value>Machine to machine application</value>
+    </data>
+    
+    
+    <!-- Account controller -->
     <data name="Invalid login attempt." xml:space="preserve">
         <value>Tentative de connexion incorrecte.</value>
     </data>
@@ -63,8 +75,17 @@
      <data name="Create new account" xml:space="preserve">
         <value>Créer un compte</value>
     </data>
+    <data name="Log in" xml:space="preserve">
+        <value>Connexion</value>
+    </data>
+    <data name="Family name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="Given name" xml:space="preserve">
+        <value>Prénom</value>
+    </data>
 
-
+    
     <!--Confirm mail-->
     <data name="Email confirmed" xml:space="preserve">
         <value>Mot de passe oublié ?</value>
@@ -151,8 +172,7 @@
     </data>
 
 
-        <!--DataAnnotation-->
-
+     <!--DataAnnotation-->
 
     <data name="Remember me?" xml:space="preserve">
         <value>Se rappeler de moi ?</value>

@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="2.1.1" />
     <PackageReference Include="Serilog" Version="2.6.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
@@ -40,6 +41,7 @@
     <Content Remove="hosting.json" />
     <Content Remove="wwwroot\css\bootstrap-grid.css" />
     <Content Remove="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Remove="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\ClientController.CS" />
@@ -67,10 +69,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Controllers.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Controllers.CollectionsController.resx">
-      <LastGenOutput>Controllers.CollectionsController.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Controllers.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Controllers.Designer.cs</LastGenOutput>
@@ -83,19 +81,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Resources.SharedResource.resx">
-      <LastGenOutput>Resources.SharedResource.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\Resources.SharedResource.fr.resx">
+      <LastGenOutput>Resources.SharedResource.fr.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources\Controllers.Designer.cs">
       <DependentUpon>Controllers.AccountController.resx</DependentUpon>
     </Compile>
-    <Compile Update="Resources\Controllers.CollectionsController.Designer.cs">
-      <DependentUpon>Controllers.CollectionsController.resx</DependentUpon>
-    </Compile>
     <Compile Update="Resources\Resources.Designer.cs">
-      <DependentUpon>Resources.SharedResource.resx</DependentUpon>
+      <DependentUpon>Resources.SharedResource.fr.resx</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Resources\Resources.SharedResource.fr.Designer.cs">
+      <DependentUpon>Resources.SharedResource.fr.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

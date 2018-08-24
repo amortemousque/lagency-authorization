@@ -16,6 +16,7 @@ using LagencyUser.Application.Model;
 using System.Collections.Generic;
 using LagencyUser.Application.Commands;
 using Microsoft.Extensions.Localization;
+using LagencyUser.Web.Resources;
 
 namespace LagencyUser.Web.Controllers
 {
@@ -24,10 +25,10 @@ namespace LagencyUser.Web.Controllers
     public class CollectionsController : Controller
     {
         
-        private readonly IStringLocalizer<CollectionsController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public CollectionsController(
-            IStringLocalizer<CollectionsController> localizer)
+            IStringLocalizer<SharedResource> localizer)
         {
             this._localizer = localizer;
         }
