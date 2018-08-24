@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
-<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
     <div class="mdc-typography--headline6 text-uppercase">@Localizer["Create a new account"]</div>
     <section class="card-content">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>

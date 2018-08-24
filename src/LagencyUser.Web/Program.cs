@@ -25,7 +25,7 @@ namespace LagencyUser.Web
             var host = BuildWebHost(args);
 
           
-            SeedData.EnsureSeedData(host.Services);
+            //SeedData.EnsureSeedData(host.Services);
             SeedData.EnsureSeedDataServer4(host.Services);
 
             host.Run();

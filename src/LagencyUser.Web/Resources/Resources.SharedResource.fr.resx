@@ -42,7 +42,7 @@
         <value>Erreur du fournisseur externe: {0}</value>
     </data>
 
-    <data name="Reset Password" xml:space="preserve">
+    <data name="Reset password" xml:space="preserve">
         <value>Réinitialiser le mot de passe</value>
     </data>
 
@@ -78,6 +78,12 @@
     <data name="Log in" xml:space="preserve">
         <value>Connexion</value>
     </data>
+    <data name="Log out" xml:space="preserve">
+        <value>Déconnexion</value>
+    </data>
+    <data name="Log off" xml:space="preserve">
+        <value>Déconnexion</value>
+    </data>
     <data name="Family name" xml:space="preserve">
         <value>Nom</value>
     </data>
@@ -88,10 +94,10 @@
     
     <!--Confirm mail-->
     <data name="Email confirmed" xml:space="preserve">
-        <value>Mot de passe oublié ?</value>
+        <value>Email confirmé</value>
     </data>
     <data name="Thank you for confirming your email. Please" xml:space="preserve">
-        <value>Merci de confirmer votre email. S'il vous plaît</value>
+        <value>Merci d'avoir confirmé votre email. </value>
     </data>
 
 
@@ -148,7 +154,7 @@
     <data name="Create a new account" xml:space="preserve">
         <value>Créer un nouveau compte</value>
     </data>
-    <data name="Confirm Password" xml:space="preserve">
+    <data name="Confirm password" xml:space="preserve">
         <value>Confirmez le mot de passe</value>
     </data>
 
@@ -177,4 +183,67 @@
     <data name="Remember me?" xml:space="preserve">
         <value>Se rappeler de moi ?</value>
     </data>
+
+
+    <!--Manage index-->
+    <data name="Personal informations" xml:space="preserve">
+        <value>Vos informations personnelles</value>
+    </data>
+    <data name="Manage login services" xml:space="preserve">
+        <value>Gérer les services de connexion</value>
+    </data>
+    <data name="Managing general information, such as your name, e-mail address, and phone number, allows others to find you on various QuarksupOne products and to contact you." xml:space="preserve">
+        <value>La gestion des informations générales, telles que votre nom, votre adresse e-mail et votre numéro de téléphone, permet aux autres utilisateurs de vous trouver sur divers produits QuarksupOne et de vous contacter.</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+        <value>Nom</value>
+    </data>
+    <data name="Email address" xml:space="preserve">
+        <value>Email</value>
+    </data>
+        <data name="Password" xml:space="preserve">
+        <value>Mot de passe</value>
+    </data>
+    <data name="Change" xml:space="preserve">
+        <value>Changer</value>
+    </data>
+    <data name="Create" xml:space="preserve">
+        <value>Créer</value>
+    </data>
+    <data name="Phone" xml:space="preserve">
+        <value>Téléphone</value>
+    </data>
+    <data name="Logins capability allow you to login into the application with your socials account like LinkedIn, Google or Facebook." xml:space="preserve">
+        <value>Le gestionnaire de connexion vous permet de vous connecter à l’application avec vos comptes sociaux comme LinkedIn, Google ou Facebook.</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+        <value>Ajouter</value>
+    </data>
+    <data name="Remove" xml:space="preserve">
+        <value>Supprimer</value>
+    </data>
+    <data name="Remove this {0} login from your account" xml:space="preserve">
+        <value>Supprimer cette connexion {0} de votre compte</value>
+    </data>
+
+    <!--Manage change password-->
+
+    <data name="Changing password will be effective imediatly. Their is no need to disconnect and reconnect. No confirmation mail will be send to you." xml:space="preserve">
+        <value>Changer le mot de passe sera effectif immédiatement. Il n'est pas nécessaire de se déconnecter et de se reconnecter. Aucun mail de confirmation ne vous sera envoyé.</value>
+    </data>
+    <data name="For security purpose your password must be at least 6 characters long and must contain at least on digit." xml:space="preserve">
+        <value>Pour des raisons de sécurité, votre mot de passe doit comporter au moins 6 caractères et contenir au moins un chiffre.</value>
+    </data>
+    <data name="Old password" xml:space="preserve">
+        <value>Ancien mot de passe</value>
+    </data>
+       <data name="New password" xml:space="preserve">
+        <value>Nouveau mot de passe</value>
+    </data>
+     <data name="Change password" xml:space="preserve">
+        <value>Changer le mot de passe</value>
+    </data>
+
+
+
 </root>

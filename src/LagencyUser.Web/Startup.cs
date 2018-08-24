@@ -137,7 +137,7 @@ namespace LagencyUser.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();
             }
             else
             {
@@ -167,13 +167,7 @@ namespace LagencyUser.Web
 
             app.UseStaticFiles();
             app.UseIdentityServer();
-            app.UseMvc(routes => {
-                routes.MapRoute(
-                  name: "default",
-                  template: "{controller}/{action}/{id?}",
-                  defaults: new { controller = "Account", action = "Index" });  
-                }
-            );
+            app.UseMvcWithDefaultRoute();
             app.UseRebus();
             //.Run(async (context) =>
             //{

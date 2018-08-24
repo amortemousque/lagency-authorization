@@ -11,7 +11,7 @@
 <div class="mdc-typography--headline6 text-uppercase">@Localizer["Associate your {0} account", ViewData["LoginProvider"]]</div>
 
 <section class="card-content">
-    <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+    <form asp-controller="Account" asp-action="ExternalLoginConfirmation" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <p class="text-info">
             @Localizer["You've successfully authenticated with <strong>{0}</strong>.Please enter a user name for this site below and click the Register button to finishlogging in.", ViewData["LoginProvider"]]

@@ -29,20 +29,28 @@ namespace LagencyUser.Application.CommandHandlers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        private readonly ITenantRepository _repository;
 
         private readonly IBus _bus;
 
         public UserHandlers(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager
+            SignInManager<IdentityUser> signInManager,
+            ITenantRepository repository
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _repository = repository;
         }
 
         public async Task<IdentityUser> Handle(CreateUserCommand message, CancellationToken cancellationToken)
         {
+            if (message.TenantId == null)
+                throw new ArgumentException("An email must be specified", nameof(message.TenantId));
+;
+            var tenant = await _repository.GetById(message.TenantId) ?? throw new ArgumentException("The tenant does not exist", nameof(message.TenantId));
+
             var user = new Model.IdentityUser { 
                 TenantId = message.TenantId,
                 UserName = message.Email, 
@@ -51,7 +59,7 @@ namespace LagencyUser.Application.CommandHandlers
                 FamilyName = message.FamilyName 
             };
 
-            var result = await _userManager.CreateAsync(user);
+            IdentityResult result = string.IsNullOrWhiteSpace(message.Password) ? await _userManager.CreateAsync(user) : await _userManager.CreateAsync(user, message.Password);
 
             if (!result.Succeeded)
             {
@@ -59,24 +67,33 @@ namespace LagencyUser.Application.CommandHandlers
                 {
                     throw new ArgumentException(result.Errors.First().Description, "email");
                 }
+                else 
+                {
+                    throw new ArgumentException(result.Errors.First().Description);
+                }
             }
 
-            await _userManager.AddToRolesAsync(user, message.Roles.Where(r => user.Roles.Any(ur => r != ur)));
+            if (message.Roles != null) 
+            {
+                result = await _userManager.AddToRolesAsync(user, message.Roles.Where(r => user.Roles.Any(ur => r != ur)));
+                if (!result.Succeeded)
+                {
+                    throw new Exception(result.Errors.First().Description);
+                }
+            }
 
 
-            result = _userManager.AddClaimsAsync(user, new Claim[]{
-                        new Claim(JwtClaimTypes.Name, user.Email),
-                        new Claim(JwtClaimTypes.GivenName, user.GivenName),
-                        new Claim(JwtClaimTypes.FamilyName, user.FamilyName),
+            result = await _userManager.AddClaimsAsync(user, new Claim[]{
+                new Claim(JwtClaimTypes.Name, user.Email),
+                new Claim(JwtClaimTypes.GivenName, user.GivenName),
+                new Claim(JwtClaimTypes.FamilyName, user.FamilyName),
+                new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString(), ClaimValueTypes.Boolean),
+                new Claim(JwtClaimTypes.Role, JsonConvert.SerializeObject(user.Roles), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
+                new Claim("tenant_id", tenant.Id.ToString()),
+                new Claim("tenant_name", tenant.Name)
+            });
 
-                        new Claim(JwtClaimTypes.Email,user.Email),
-                        new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString(), ClaimValueTypes.Boolean),
-                        new Claim(JwtClaimTypes.Role, JsonConvert.SerializeObject(user.Roles), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                //new Claim(JwtClaimTypes.Role, JsonConvert.SerializeObject(user.), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-
-                        //new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-                        //new Claim("location", "somewhere")
-                    }).Result;
             if (!result.Succeeded)
             {
                 throw new Exception(result.Errors.First().Description);
@@ -102,10 +119,25 @@ namespace LagencyUser.Application.CommandHandlers
        
             await _userManager.UpdateAsync(user);
 
-            var rolesToDelete = user.Roles.Where(ur => !message.Roles.Any(r => r == ur));
+            var rolesToDelete = user.Roles.Where(ur => !message.Roles.Any(r => r == ur)).ToList();
             var result = await _userManager.RemoveFromRolesAsync(user, rolesToDelete);
             var rolesToAdd = message.Roles.Where(r => !user.Roles.Any(ur => r == ur)).ToList();
             var result2 = await _userManager.AddToRolesAsync(user, rolesToAdd);
+
+            var claims = user.Claims.Select(cw => cw.ToSecurityClaim()).ToList();
+            result = await _userManager.RemoveClaimsAsync(user, claims);
+            var tenant = await _repository.GetById(user.TenantId);
+
+            result = await _userManager.AddClaimsAsync(user, new Claim[]{
+                new Claim(JwtClaimTypes.Name, user.Email),
+                new Claim(JwtClaimTypes.GivenName, user.GivenName),
+                new Claim(JwtClaimTypes.FamilyName, user.FamilyName),
+                new Claim(JwtClaimTypes.Email, user.Email),
+                new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString(), ClaimValueTypes.Boolean),
+                new Claim(JwtClaimTypes.Role, JsonConvert.SerializeObject(user.Roles), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
+                new Claim("tenant_id", tenant.Id.ToString()),
+                new Claim("tenant_name", tenant.Name)
+            });
 
             return true;
         }

@@ -1,4 +1,8 @@
-﻿@model IndexViewModel
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using LagencyUser.Web.Resources
+
+@inject IHtmlLocalizer<SharedResource> Localizer
+@model IndexViewModel
 @{
     ViewData["Title"] = "Manage your account";
 }
@@ -8,17 +12,17 @@
     </div>
 }
 
-<h2 class="mdc-typography--headline4 mb-1">Personal informations</h2>
+<h2 class="mdc-typography--headline4 mb-1">@Localizer["Personal informations"]</h2>
 <div class="management-block d-flex flex-column flex-md-row align-items-stretch">
     <div class="management-info">
-        Managing general information, such as your name, e-mail address, and phone number, allows others to find on various QuarksupOne products in contact with you.
+        @Localizer["Managing general information, such as your name, e-mail address, and phone number, allows others to find you on various QuarksupOne products and to contact you."]
     </div>
     <div class="management-content">
         <div class="mdc-card text-center main-card p-0">
             <div class="app-dataview dataview-list">
                 <div class="dataview-row">
                     <div class="content-label">
-                        <h3>Name</h3>
+                        <h3>@Localizer["Name"]</h3>
                     </div>
                     <div class="dataview-info">
                         @Model.Name
@@ -26,7 +30,7 @@
                 </div>
                 <div class="dataview-row">
                     <div class="content-label">
-                        <h3>Email address</h3>
+                        <h3>@Localizer["Email address"]</h3>
                     </div>
                     <div class="dataview-info">
                         @Model.Email
@@ -34,36 +38,41 @@
                 </div>
                 <div class="dataview-row">
                     <div class="content-label">
-                        <h3>Password</h3>
+                        <h3>@Localizer["Password"]</h3>
                     </div>
 
                     <div class="dataview-info">
                         @if (Model.HasPassword)
                         {
-                            <text><a asp-controller="Manage" asp-action="ChangePassword" class="mdc-button">Change</a></text>
+                            <text><a asp-controller="Manage" asp-action="ChangePassword" class="mdc-button">@Localizer["Change"]</a></text>
                         }
                         else
                         {
-                            <text><a asp-controller="Manage" asp-action="SetPassword" class="mdc-button">Create</a></text>
+                            <text><a asp-controller="Manage" asp-action="SetPassword" class="mdc-button">@Localizer["Create"]</a></text>
                         }
                     </div>
                 </div>
                 <div class="dataview-row">
                     <div class="content-label">
-                        <h3>Phone</h3>
+                        <h3>@Localizer["Phone"]</h3>
                     </div>
                     <div class="dataview-info">
                         @Model.Phone
                     </div>
                 </div>
+                <div class="dataview-row">
+                    <form asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+                        <button type="submit" class="mdc-button">@Localizer["Log off"]</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<h2 class="mdc-typography--headline4 mb-1">Manage login services</h2>
+<h2 class="mdc-typography--headline4 mb-1">@Localizer["Manage login services"]</h2>
 <div class="management-block  d-flex flex-column flex-md-row align-items-stretch">
     <div class="management-info">
-        Logins capability allow you to login into the application with your socials account like LinkedIn, Google or Facebook.
+        @Localizer["Logins capability allow you to login into the application with your socials account like LinkedIn, Google or Facebook."]
     </div>
     <div class="management-content">
 
@@ -84,7 +93,7 @@
                                     <div>
                                         <input asp-for="@Model.ManageLoginsModel.CurrentLogins[index].LoginProvider" name="LoginProvider" type="hidden" />
                                         <input asp-for="@Model.ManageLoginsModel.CurrentLogins[index].ProviderKey" name="ProviderKey" type="hidden" />
-                                        <input type="submit" class="mdc-button" value="Remove" title="Remove this @Model.ManageLoginsModel.CurrentLogins[index].LoginProvider login from your account" />
+                                        <input type="submit" class="mdc-button" value="@Localizer["Remove"]" title="@Localizer["Remove this {0} login from your account", Model.ManageLoginsModel.CurrentLogins[index].LoginProvider]" />
                                     </div>
                                 </form>
                             }
@@ -106,7 +115,7 @@
                             <p>
                                 @foreach (var provider in Model.ManageLoginsModel.OtherLogins)
                                 {
-                                <button type="submit" class="mdc-button  mdc-button--raised button-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">Add @provider.DisplayName</button>
+                                <button type="submit" class="mdc-button  mdc-button--raised button-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@Localizer["Add"] @provider.DisplayName</button>
                                 }
                             </p>
                         </div>

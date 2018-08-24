@@ -19,17 +19,17 @@ namespace LagencyUser.Web.Configuration
                 ///////////////////////////////////////////
                 // Console Client Credentials Flow Sample
                 //////////////////////////////////////////
-                new Client
-                {
-                    ClientId = "client",
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
+                //new Client
+                //{
+                //    ClientId = "client",
+                //    ClientSecrets =
+                //    {
+                //        new Secret("secret".Sha256())
+                //    },
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = { "api1", "api2.read_only" }
-                },
+                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                //    AllowedScopes = { "api1", "api2.read_only" }
+                //},
 
                 ///////////////////////////////////////////
                 // Console Client Credentials Flow with client JWT assertion
@@ -230,7 +230,7 @@ namespace LagencyUser.Web.Configuration
                 new Client
                 {
                     ClientId = "js_oauth",
-                    ClientName = "JavaScript OAuth 2.0 Client",
+                    ClientName = "JavaScript OAuth 2.0 Test Client",
                     ClientUri = "http://localhost:4200",
                     //LogoUri = "https://pbs.twimg.com/profile_images/1612989113/Ki-hanja_400x400.png",
 
@@ -255,7 +255,7 @@ namespace LagencyUser.Web.Configuration
                         Constants.CustomScopes.Tenant,
                         "api1", 
                         "api2.read_only" }
-                },
+                }
                 
                 ///////////////////////////////////////////
                 // JS OIDC Sample

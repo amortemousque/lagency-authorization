@@ -83,9 +83,9 @@ namespace LagencyUser.Web.Resources {
             }
         }
         
-        internal static string Reset_Password {
+        internal static string Reset_password {
             get {
-                return ResourceManager.GetString("Reset Password", resourceCulture);
+                return ResourceManager.GetString("Reset password", resourceCulture);
             }
         }
         
@@ -140,6 +140,18 @@ namespace LagencyUser.Web.Resources {
         internal static string Log_in {
             get {
                 return ResourceManager.GetString("Log in", resourceCulture);
+            }
+        }
+        
+        internal static string Log_out {
+            get {
+                return ResourceManager.GetString("Log out", resourceCulture);
+            }
+        }
+        
+        internal static string Log_off {
+            get {
+                return ResourceManager.GetString("Log off", resourceCulture);
             }
         }
         
@@ -235,9 +247,9 @@ namespace LagencyUser.Web.Resources {
             }
         }
         
-        internal static string Confirm_Password {
+        internal static string Confirm_password {
             get {
-                return ResourceManager.GetString("Confirm Password", resourceCulture);
+                return ResourceManager.GetString("Confirm password", resourceCulture);
             }
         }
         
@@ -268,6 +280,112 @@ namespace LagencyUser.Web.Resources {
         internal static string Remember_me_ {
             get {
                 return ResourceManager.GetString("Remember me?", resourceCulture);
+            }
+        }
+        
+        internal static string Personal_informations {
+            get {
+                return ResourceManager.GetString("Personal informations", resourceCulture);
+            }
+        }
+        
+        internal static string Manage_login_services {
+            get {
+                return ResourceManager.GetString("Manage login services", resourceCulture);
+            }
+        }
+        
+        internal static string Managing_general_information__such_as_your_name__e_mail_address__and_phone_number__allows_others_to_find_you_on_various_QuarksupOne_products_and_to_contact_you_ {
+            get {
+                return ResourceManager.GetString("Managing general information, such as your name, e-mail address, and phone number" +
+                        ", allows others to find you on various QuarksupOne products and to contact you.", resourceCulture);
+            }
+        }
+        
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        internal static string Email_address {
+            get {
+                return ResourceManager.GetString("Email address", resourceCulture);
+            }
+        }
+        
+        internal static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
+            }
+        }
+        
+        internal static string Create {
+            get {
+                return ResourceManager.GetString("Create", resourceCulture);
+            }
+        }
+        
+        internal static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        internal static string Logins_capability_allow_you_to_login_into_the_application_with_your_socials_account_like_LinkedIn__Google_or_Facebook_ {
+            get {
+                return ResourceManager.GetString("Logins capability allow you to login into the application with your socials accou" +
+                        "nt like LinkedIn, Google or Facebook.", resourceCulture);
+            }
+        }
+        
+        internal static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        internal static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        internal static string Remove_this__0__login_from_your_account {
+            get {
+                return ResourceManager.GetString("Remove this {0} login from your account", resourceCulture);
+            }
+        }
+        
+        internal static string Changing_password_will_be_effective_imediatly__Their_is_no_need_to_disconnect_and_reconnect__No_confirmation_mail_will_be_send_to_you_ {
+            get {
+                return ResourceManager.GetString("Changing password will be effective imediatly. Their is no need to disconnect and" +
+                        " reconnect. No confirmation mail will be send to you.", resourceCulture);
+            }
+        }
+        
+        internal static string For_security_purpose_your_password_must_be_at_least_6_characters_long_and_must_contain_at_least_on_digit_ {
+            get {
+                return ResourceManager.GetString("For security purpose your password must be at least 6 characters long and must co" +
+                        "ntain at least on digit.", resourceCulture);
+            }
+        }
+        
+        internal static string Old_password {
+            get {
+                return ResourceManager.GetString("Old password", resourceCulture);
+            }
+        }
+        
+        internal static string New_password {
+            get {
+                return ResourceManager.GetString("New password", resourceCulture);
+            }
+        }
+        
+        internal static string Change_password {
+            get {
+                return ResourceManager.GetString("Change password", resourceCulture);
             }
         }
     }

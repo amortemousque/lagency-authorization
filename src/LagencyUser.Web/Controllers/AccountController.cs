@@ -24,6 +24,9 @@ using Microsoft.Extensions.Localization;
 using LagencyUser.Web.Resources;
 using Microsoft.AspNetCore.Localization;
 using System.Collections.Generic;
+using System.Diagnostics;
+using MediatR;
+using LagencyUser.Application.Commands;
 
 namespace LagencyUser.Web.Controllers
 {
@@ -44,6 +47,7 @@ namespace LagencyUser.Web.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly TenantQueries _tenantQueries;
+        private readonly IMediator _mediator;
 
 
         public AccountController(
@@ -58,7 +62,8 @@ namespace LagencyUser.Web.Controllers
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
             IEventService events,
-            IStringLocalizer<SharedResource> localizer
+            IStringLocalizer<SharedResource> localizer,
+            IMediator mediator
         )
         {
             _userManager = userManager;
@@ -67,6 +72,7 @@ namespace LagencyUser.Web.Controllers
             _smsSender = smsSender;
             _tenantQueries = tenantQueries;
             _localizer = localizer;
+            _mediator = mediator;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -80,15 +86,6 @@ namespace LagencyUser.Web.Controllers
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewData["LogoUri"] = GetCurrentTenant().LogoUri;
-        }
-
-        //
-        // GET: /Account
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Index(string returnUrl = null)
-        {
-            return RedirectToAction(nameof(Login));
         }
 
         //
@@ -159,21 +156,31 @@ namespace LagencyUser.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var createUserCommand = new CreateUserCommand
                 {
+                    TenantId = GetCurrentTenant().Id,
+                    Email = model.Email,
+                    GivenName = model.GivenName,
+                    FamilyName = model.FamilyName,
+                    Password = model.Password
+                };
+                try {
+                    var user = await _mediator.Send(createUserCommand);
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, _localizer["Confirm your account"],
-                                                      _localizer["Please confirm your account by clicking this link: {0}"," <a href=\"" + callbackUrl + "\">link</a>"]);
+                                                      _localizer["Please confirm your account by clicking this link: {0}", " <a href=\"" + callbackUrl + "\">link</a>"]);
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
                     return RedirectToLocal(returnUrl);
+                }  
+                catch (ArgumentException exception) 
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message.Split('\n').First());
                 }
-                AddErrors(result);
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -227,7 +234,7 @@ namespace LagencyUser.Web.Controllers
 
             // Sign in the user with this external login provider if the user already has a login.
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
-            if (result.Succeeded)
+                if (result.Succeeded)
             {
                 // Update any authentication tokens if login succeeded
                 await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
@@ -286,11 +293,18 @@ namespace LagencyUser.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded)
+                //var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
+
+                var createUserCommand = new CreateUserCommand
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    TenantId = GetCurrentTenant().Id,
+                    Email = model.Email,
+                    GivenName = model.GivenName,
+                    FamilyName = model.FamilyName
+                };
+                try {
+                    var user = await _mediator.Send(createUserCommand);
+                    var result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -302,7 +316,10 @@ namespace LagencyUser.Web.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                 }
-                AddErrors(result);
+                catch (ArgumentException exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
             }
 
             ViewData["ReturnUrl"] = returnUrl;

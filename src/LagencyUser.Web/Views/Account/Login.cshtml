@@ -88,7 +88,7 @@
         }
         else
         {
-            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData[" ReturnUrl"]" method="post" class="form-horizontal" role="form">
+            <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
                 <div>
                     <p>
                         @foreach (var provider in loginProviders)
@@ -103,7 +103,7 @@
 </section>
 
 <p>
-    <a asp-action="Register" class="link" asp-route-returnurl="@ViewData[" ReturnUrl"]">@Localizer["Create new account"]</a>
+    <a asp-action="Register" class="link" asp-route-returnurl="@ViewData["ReturnUrl"]">@Localizer["Create new account"]</a>
 </p>
 
 
