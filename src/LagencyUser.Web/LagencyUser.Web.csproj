@@ -36,6 +36,7 @@
     <Folder Include="Configuration\" />
     <Folder Include="Resources\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Managers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="hosting.json" />
@@ -60,6 +61,7 @@
     <Compile Remove="Services\ApiService.cs" />
     <Compile Remove="Config.cs" />
     <Compile Remove="Models\ApplicationRole.cs" />
+    <Compile Remove="Managers\CustomSignInManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Infrastructure\LagencyUser.Infrastructure.csproj" />

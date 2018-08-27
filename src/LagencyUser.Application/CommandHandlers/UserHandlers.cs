@@ -116,6 +116,10 @@ namespace LagencyUser.Application.CommandHandlers
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 await _userManager.ChangeEmailAsync(user, message.Email, code);
             }
+
+            if (message.EmailConfirmed != null) {
+                user.EmailConfirmed = message.EmailConfirmed.Value;
+            }
        
             await _userManager.UpdateAsync(user);
 

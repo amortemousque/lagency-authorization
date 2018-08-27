@@ -24,6 +24,17 @@ namespace LagencyUser.Infrastructure.Repositories
             return _context.Roles.AsQueryable();
         }
 
+
+        public async Task<List<string>> GetRolePermissions(string[] roleNames)
+        {
+            var filterDef = new FilterDefinitionBuilder<IdentityRole>();
+            var filter = filterDef.In(x => x.NormalizedName, roleNames);
+            var roles = await _context.Roles.Find(filter).ToListAsync();
+            var permissions = roles.ToList().SelectMany(r => r.Permissions).Distinct().ToList();
+
+            return permissions;
+        }
+
         public async Task<List<Permission>> GetRolePermissions(Guid id)
         {
             var role = await _context.Roles.AsQueryable().SingleOrDefaultAsync(t => t.Id == id.ToString());

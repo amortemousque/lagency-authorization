@@ -26,7 +26,7 @@ namespace LagencyUser.Application.EventHandlers
         public async Task Handle(PermissionDeletedEvent notification, CancellationToken cancellationToken)
         {
             //Delete permission reference into roles
-            var roles = _roleManager.Roles.ToList().Where(role => role.Permissions.Any(pname => pname == notification.Name));
+            var roles = _roleManager.Roles.ToList().Where(role => role.Permissions != null && role.Permissions.Any(pname => pname == notification.Name)).ToList();
 
             foreach(var role in roles) 
             {

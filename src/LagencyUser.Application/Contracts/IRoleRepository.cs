@@ -13,6 +13,8 @@ namespace LagencyUser.Application.Contracts
 
         Task<IQueryable<IdentityRole>> GetAll();
 
+        Task<List<string>> GetRolePermissions(string[] roleNames);
+
         Task<List<Permission>> GetRolePermissions(Guid id);
 
         Task<bool> HasUniqName(string name);
