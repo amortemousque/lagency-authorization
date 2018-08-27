@@ -54,7 +54,7 @@ namespace LagencyUser.Web
             services.AddScoped<SignInManager<Model.IdentityUser>, CustomSignInManager>();
 
             //Application - Db Context
-            var context = new ApplicationDbContext(Configuration.GetConnectionString("DefaultConnection"));
+            var context = new ApplicationDbContext(Configuration.GetRequiredValue<string>("MONGO_URL"));
             services.AddScoped<ApplicationDbContext>(cw => context);
 
 
@@ -128,7 +128,7 @@ namespace LagencyUser.Web
 
 
             //rebus configuration
-            services.AddRebusConfiguration(Configuration.GetRequiredValue<string>("RABBIT_MQ_URL"), Configuration.GetRequiredValue<string>("RABBIT_MQ_QUEUE_NAME"));
+            services.AddRebusConfiguration(Configuration.GetRequiredValue<string>("RABBITMQ_URL"), Configuration.GetRequiredValue<string>("RABBITMQ_QUEUE_NAME"));
 
         }
 
@@ -137,7 +137,7 @@ namespace LagencyUser.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
