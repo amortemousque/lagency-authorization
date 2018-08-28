@@ -1,6 +1,6 @@
 ﻿FROM microsoft/aspnetcore:2.0 AS base
 WORKDIR /app
-EXPOSE 5011
+EXPOSE 5001
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src

@@ -23,7 +23,8 @@ namespace LagencyUser.Web.Configuration
                 new IdentityResources.Phone(),
                 new CustomIdentityResources.Role(),
                 new CustomIdentityResources.Scope(),
-                new CustomIdentityResources.Tenant()
+                new CustomIdentityResources.Tenant(),
+                new CustomIdentityResources.Permission()
             };
                
         }

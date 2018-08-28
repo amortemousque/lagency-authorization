@@ -37,6 +37,9 @@ namespace LagencyUser.Infrastructure.IdentityServer4
             public const string TenantId = "tenant_id";
 
             public const string TenantName = "tenant_name";
+
+            public const string Permission = "permission";
+
         }
 
 

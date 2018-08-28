@@ -29,8 +29,8 @@ namespace LagencyUser.Infrastructure.Repositories
         {
             var filterDef = new FilterDefinitionBuilder<IdentityRole>();
             var filter = filterDef.In(x => x.NormalizedName, roleNames);
-            var roles = await _context.Roles.Find(filter).ToListAsync();
-            var permissions = roles.ToList().SelectMany(r => r.Permissions).Distinct().ToList();
+            var roles = await _context.Roles.Find(filter).ToListAsync() ?? new List<IdentityRole>();
+            var permissions = roles.ToList().SelectMany(r => r.Permissions ?? new List<string>()).Distinct().ToList();
 
             return permissions;
         }

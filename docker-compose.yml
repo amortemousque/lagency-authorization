@@ -7,14 +7,14 @@ services:
       context: .
       dockerfile: src/LagencyUser.Web/Dockerfile
     ports: 
-      - "5011:5011"
+      - "5001:5001"
     environment:
-      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_ENVIRONMENT: development
       JWT_AUTHORITY: ${JWT_AUTHORITY}
       JWT_AUDIENCE: ${JWT_AUDIENCE}
       MONGO_URL: mongodb://user:user@mongo:27017/User
-      RABBITMQ_URL: ${RABBITMQ_URL}
-      RABBITMQ_QUEUE_NAME: ${RABBITMQ_QUEUE_NAME}
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq
+      RABBITMQ_QUEUE_NAME: services_queue
     networks:
       - quarksupone
  

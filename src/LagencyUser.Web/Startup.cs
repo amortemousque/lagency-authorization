@@ -34,6 +34,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using LagencyUser.Web.Resources;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace LagencyUser.Web
 {
@@ -165,10 +166,21 @@ namespace LagencyUser.Web
                 SupportedUICultures = supportedCultures
             });
 
+            var fordwardedHeaderOptions = new ForwardedHeadersOptions
+           {
+               ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+           };
+            fordwardedHeaderOptions.KnownNetworks.Clear();
+            fordwardedHeaderOptions.KnownProxies.Clear();
+
+            app.UseForwardedHeaders(fordwardedHeaderOptions);
+
+            app.UsePathBase(new PathString("/user"));
             app.UseStaticFiles();
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
             app.UseRebus();
+
             //.Run(async (context) =>
             //{
             //    var bus = app.ApplicationServices.GetRequiredService<IBus>();

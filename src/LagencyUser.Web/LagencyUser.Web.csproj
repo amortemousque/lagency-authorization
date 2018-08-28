@@ -40,19 +40,18 @@
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="hosting.json" />
     <Content Remove="wwwroot\css\bootstrap-grid.css" />
     <Content Remove="Views\Shared\_LayoutLogin.cshtml" />
     <Content Remove="Views\Home\Index.cshtml" />
     <Content Remove="Views\Shared\Error.cshtml" />
+    <Content Remove="hosting.config" />
+    <Content Remove="hosting.json" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controllers\ClientController.CS" />
     <None Remove="Scripts\material-mdc.js" />
-    <None Remove="Dockerfile" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="hosting.json" />
     <None Include="wwwroot\css\bootstrap-grid.css" />
     <None Include="Views\Shared\_LayoutAccount.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />

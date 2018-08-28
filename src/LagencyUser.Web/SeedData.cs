@@ -116,13 +116,14 @@ namespace LagencyUser.Web
                         }
                     }
 
-                    if (!context.IdentityResources.AsQueryable().Any())
+                    var ressource = await context.IdentityResources.Find(_ => true).ToListAsync();
+                    foreach (var resource in Configuration.Resources.GetIdentityResources().ToList())
                     {
-                        foreach (var resource in Configuration.Resources.GetIdentityResources().ToList())
-                        {
+                        if(!ressource.Any(r => r.Name == resource.Name)) {
                             await context.AddIdentityResource(resource.ToEntity());
                         }
                     }
+
 
                     if (!context.ApiResources.AsQueryable().Any())
                     {

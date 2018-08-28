@@ -11,6 +11,7 @@ using System.Linq;
 using Model = LagencyUser.Application.Model;
 using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace LagencyUser.Web
 {
@@ -116,17 +117,26 @@ namespace LagencyUser.Web
 
         private async Task<bool> PermissionsSynchro(Model.IdentityUser user)
         {
-            var claims = await _userManager.GetClaimsAsync(user);
-            var claimRole = claims.FirstOrDefault(c => c.Type == "role");
-            var claimPermission = claims.FirstOrDefault(c => c.Type == "permission");
+            if(user != null) {
+                var claims = await _userManager.GetClaimsAsync(user);
+                var claimRole = claims.FirstOrDefault(c => c.Type == "role");
+                var claimPermission = claims.FirstOrDefault(c => c.Type == "permission");
 
-            var roles = JsonConvert.DeserializeObject<string[]>(claimRole.Value);
-            var permissions = _roleRepository.GetRolePermissions(roles);
+                var roles = JsonConvert.DeserializeObject<List<string>>(claimRole.Value);
+                var permissions = await _roleRepository.GetRolePermissions(roles.ToArray());
+                if(claimPermission != null) 
+                {
+                    await _userManager.ReplaceClaimAsync(user, claimPermission, new Claim("permission", JsonConvert.SerializeObject(permissions)));
+                } 
+                else 
+                {
+                    await _userManager.AddClaimAsync(user, new Claim("permission", JsonConvert.SerializeObject(permissions)));
+                }
 
-            var result = await _userManager.ReplaceClaimAsync(user, claimPermission, new Claim("permission", JsonConvert.SerializeObject(permissions)));
-            await UserManager.UpdateAsync(user);
-
-            return true;
+                return true;
+            }
+    
+            return false;
         }
     }
 }

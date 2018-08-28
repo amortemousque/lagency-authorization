@@ -33,5 +33,13 @@ namespace LagencyUser.Infrastructure.IdentityServer4.Models
             }
         }
 
+        public class Permission : IdentityResource
+        {
+            public Permission(): base("permission", new[] { CustomClaimTypes.Permission }) 
+            {
+                this.DisplayName = "User permissions";
+            }
+        }
+
     }
 }
