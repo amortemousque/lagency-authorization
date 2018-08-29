@@ -31,7 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LagencyUser.Application\LagencyUser.Application.csproj" />
-    <ProjectReference Include="..\IntegrationMessages\IntegrationMessages.csproj" />
+    <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IdentityServer4\CustomClaimClaimTypes.cs" />

@@ -11,7 +11,7 @@ using LagencyUser.Application.CommandHandlers;
 using LagencyUser.Application.Events;
 using Rebus.Serialization.Json;
 using Newtonsoft.Json;
-using IntegrationMessages.Commands;
+using IntegrationEvents;
 
 namespace LagencyUser.Infrastructure.Bus.Extensions
 {
@@ -39,7 +39,8 @@ namespace LagencyUser.Infrastructure.Bus.Extensions
             return services.AddRebus(configure => configure
                 .Serialization(s => s.UseNewtonsoftJson(jsonConfiguration))
                 .Logging(l => l.Console())
-                .Transport(t => t.UseRabbitMq(connectionString, queueName))
+                .Transport(t => 
+                           t.UseRabbitMq(connectionString, queueName))
                 .Routing(r => r.TypeBased()
                          //.Map<SendEmail>("LagencyNotification.Application.Events.SendEmail")
                          .MapAssemblyOf<SendEmail>(queueName)));

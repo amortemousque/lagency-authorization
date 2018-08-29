@@ -13,7 +13,7 @@ services:
       JWT_AUTHORITY: ${JWT_AUTHORITY}
       JWT_AUDIENCE: ${JWT_AUDIENCE}
       MONGO_URL: mongodb://user:user@mongo:27017/User
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq
+      RABBITMQ_URL: amqp://mbqxzlgv:RUhVWZbSIFp1raEi96X8zebWpcIJTh5Q@wasp.rmq.cloudamqp.com/mbqxzlgv
       RABBITMQ_QUEUE_NAME: services_queue
     networks:
       - quarksupone

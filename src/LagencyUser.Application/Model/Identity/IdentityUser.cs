@@ -31,10 +31,23 @@
         public string FamilyName { get; set; }
 
         [PersonalData]
+        public string Culture { get; set; }
+
+        [PersonalData]
+        public string Picture { get; set; }
+
+        [PersonalData]
         public string FullName { get; set; }
 
         [PersonalData]
         public string NormalizedFullName { get; set; }
+
+        [PersonalData]
+        public string LinkedinProviderData { get; set; }
+
+        [PersonalData]
+        public string GoogleProviderData { get; set; }
+
 
         [PersonalData]
         public virtual DateTime? LastLoginDate { get; set; }

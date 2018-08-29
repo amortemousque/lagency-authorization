@@ -13,7 +13,11 @@ namespace LagencyUser.Application.Commands
         public string FamilyName { get; set; }
         public string Password { get; set; }
         public string Description { get; set; }
+        public string Picture { get; set; }
+        public string Culture { get; set; }
         public List<string> Roles { get; set; }
+        public string ProviderName { get; set; }
+        public string ProviderData { get; set; }
     }
 }
             

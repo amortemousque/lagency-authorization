@@ -35,6 +35,14 @@ using LagencyUser.Web.Resources;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Authentication.LinkedIn;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Newtonsoft.Json.Linq;
+using System.Security.Claims;
+using IdentityModel;
+using Newtonsoft.Json;
 
 namespace LagencyUser.Web
 {
@@ -205,12 +213,106 @@ namespace LagencyUser.Web
             services.AddOidcStateDataFormatterCache("aad", "demoidsrv");
 
             services.AddAuthentication()
-                .AddGoogle("Google", options =>
+            .AddGoogle("Google", options =>
+            {
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.ClientId = "926489309778-mog8hsf0g0au6h6dt3sbkbrilit7sqqa.apps.googleusercontent.com";
+                options.ClientSecret = "gUfvfTL7ChV1JoOJHU5lRgdL";
+            })
+            .AddOAuth("LinkedIn", "LinkedIn", options =>
+            {
+                options.SignInScheme = IdentityConstants.ExternalScheme;
+                options.ClientId = "77tldmfp07vq6g";
+                options.ClientSecret = "PRR4emMkmbUFY7vU";
+                options.CallbackPath = new PathString("/signin-linkedin");
+
+                options.AuthorizationEndpoint = "https://www.linkedin.com/oauth/v2/authorization";
+                options.TokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken";
+                options.UserInformationEndpoint = "https://api.linkedin.com/v1/people/~:(id,first-name,last-name,maiden-name,formatted-name,headline,location,industry,summary,specialties,positions,public-profile-url,email-address,picture-url,picture-urls::(original))";
+
+                options.Scope.Add("r_basicprofile");
+                //options.Scope.Add("r_fullprofile");
+                options.Scope.Add("r_emailaddress");
+
+
+
+                options.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents
                 {
-                    options.SignInScheme = IdentityConstants.ExternalScheme;
-                    options.ClientId = "926489309778-mog8hsf0g0au6h6dt3sbkbrilit7sqqa.apps.googleusercontent.com";
-                    options.ClientSecret = "gUfvfTL7ChV1JoOJHU5lRgdL";
-                });
+                    OnCreatingTicket = async context =>
+                    {
+                        var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+                        request.Headers.Add("x-li-format", "json");
+
+                        var response = await context.Backchannel.SendAsync(request, context.HttpContext.RequestAborted);
+                        response.EnsureSuccessStatusCode();
+                        var user = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+                        var userId = (string)user["id"];
+                        if (!string.IsNullOrEmpty(userId))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                        }
+
+                        var firstName = (string)user["firstName"];
+                        if (!string.IsNullOrEmpty(firstName))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.GivenName, firstName, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                        }
+
+                        var lastName = (string)user["lastName"];
+                        if (!string.IsNullOrEmpty(lastName))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.Name, lastName, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                            context.Identity.AddClaim(new Claim(JwtClaimTypes.FamilyName, lastName, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                            context.Identity.AddClaim(new Claim(ClaimTypes.Surname, lastName, ClaimValueTypes.String, context.Options.ClaimsIssuer));
+                        }
+
+                        var email = (string)user["emailAddress"];
+                        if (!string.IsNullOrEmpty(email))
+                        {
+                            context.Identity.AddClaim(new Claim(ClaimTypes.Email, email, ClaimValueTypes.String,
+                                context.Options.ClaimsIssuer));
+                        }
+                        var pictureUrl = (string)user["pictureUrl"];
+                        if (!string.IsNullOrEmpty(pictureUrl))
+                        {
+                            context.Identity.AddClaim(new Claim(JwtClaimTypes.Picture, pictureUrl, ClaimValueTypes.String,
+                                context.Options.ClaimsIssuer));
+                        }
+
+                        if(user["location"] != null && user["location"]["country"] != null && user["location"]["country"]["code"] != null) {
+                            var localCode = (string)user["location"]["country"]["code"];
+                            if (!string.IsNullOrEmpty(pictureUrl))
+                            {
+                                context.Identity.AddClaim(new Claim(JwtClaimTypes.Locale, localCode, ClaimValueTypes.String,
+                                    context.Options.ClaimsIssuer));
+                            }
+                        }
+
+                        var identityProviderData = JsonConvert.SerializeObject(user);
+                        context.Identity.AddClaim(new Claim("identity_provider_data", identityProviderData, IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json, context.Options.ClaimsIssuer));
+                        
+
+                        //new Claim(JwtClaimTypes., user.Email),
+                        //new Claim(JwtClaimTypes.GivenName, user.GivenName),
+                        //new Claim(JwtClaimTypes.FamilyName, user.FamilyName),
+                        //new Claim(JwtClaimTypes.Email, user.Email),
+                        //new Claim(JwtClaimTypes.EmailVerified, user.EmailConfirmed.ToString(), ClaimValueTypes.Boolean),
+                        //new Claim(JwtClaimTypes.Role, JsonConvert.SerializeObject(user.Roles), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
+                        //new Claim("tenant_id", tenant.Id.ToString()),
+                        //new Claim("tenant_name", tenant.Name)
+
+                    }
+                };
+
+                //options.Events = new OAuthEvents
+                //{
+                //    OnCreatingTicket = OnCreatingTicketLinkedInCallBack,
+                //    OnTicketReceived = OnTicketReceivedCallback
+                //};
+            });
+
             //.AddOpenIdConnect("demoidsrv", "IdentityServer", options =>
             //{
             //options.SignInScheme = IdentityConstants.ExternalScheme;

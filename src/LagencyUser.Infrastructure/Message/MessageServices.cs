@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IntegrationMessages.Commands;
+using IntegrationEvents;
 using LagencyUser.Application.Events;
 using LagencyUser.Web.Services;
 using Rebus.Bus;

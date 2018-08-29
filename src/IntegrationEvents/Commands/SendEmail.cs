@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace IntegrationMessages.Commands
+namespace IntegrationEvents
 {
     public class SendEmail
     {

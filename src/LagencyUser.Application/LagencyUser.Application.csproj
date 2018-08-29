@@ -32,6 +32,6 @@
     <Compile Remove="Events\SendMail.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IntegrationMessages\IntegrationMessages.csproj" />
+    <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
   </ItemGroup>
 </Project>

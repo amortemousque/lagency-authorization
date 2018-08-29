@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using MediatR;
 using LagencyUser.Application.Commands;
+using IdentityModel;
 
 namespace LagencyUser.Web.Controllers
 {
@@ -156,13 +157,16 @@ namespace LagencyUser.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+
                 var createUserCommand = new CreateUserCommand
                 {
                     TenantId = GetCurrentTenant().Id,
                     Email = model.Email,
                     GivenName = model.GivenName,
                     FamilyName = model.FamilyName,
-                    Password = model.Password
+                    Password = model.Password,
+                    Culture = rqf.RequestCulture.Culture.Name
                 };
                 try {
                     var user = await _mediator.Send(createUserCommand);
@@ -293,14 +297,18 @@ namespace LagencyUser.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                //var user = new Model.IdentityUser { UserName = model.Email, Email = model.Email, GivenName = model.GivenName, FamilyName = model.FamilyName };
 
                 var createUserCommand = new CreateUserCommand
                 {
                     TenantId = GetCurrentTenant().Id,
                     Email = model.Email,
                     GivenName = model.GivenName,
-                    FamilyName = model.FamilyName
+                    FamilyName = model.FamilyName,
+                    Picture = info.Principal.FindFirstValue(JwtClaimTypes.Picture),
+                    Culture = info.Principal.FindFirstValue(JwtClaimTypes.Locale),
+                    ProviderName = info.LoginProvider,
+                    ProviderData = info.Principal.FindFirstValue("identity_provider_data")
+
                 };
                 try {
                     var user = await _mediator.Send(createUserCommand);
